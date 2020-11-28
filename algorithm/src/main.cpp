@@ -9,7 +9,6 @@
 #include "HashNode.h"
 #include "KeyHash.h"
 #include "HashMap.h"
-using namespace std;
 
 const size_t tableSize = 5;
 
@@ -51,7 +50,7 @@ int main() {
     */
 
     //test simple hash map
-    HashMap<int, string, tableSize, MyKeyHash> hmap;
+    HashMap <int, std::string, tableSize, MyKeyHash> hmap;
 
     hmap.put(1, "val1");
     hmap.put(2, "val2");
@@ -60,10 +59,10 @@ int main() {
 
     std::string value;
     hmap.get(6, value);
-    cout << value << endl;
+    std::cout << value << std::endl;
     bool res = hmap.get(3, value);
     if (res)
-        cout << value << endl;
+        std::cout << value << std::endl;
   /*  hmap.remove(3);
     res = hmap.get(3, value);
     if (res)
