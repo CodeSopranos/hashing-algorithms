@@ -2,9 +2,9 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include <utility> 
+#include <utility>
 
-#include "file_utils.h"
+#include "utils.h"
 
 #include "HashNode.h"
 #include "KeyHash.h"
@@ -67,6 +67,9 @@ int main() {
     res = hmap.get(3, value);
     if (res)
         cout << value << endl;*/
-
+    std::vector<int> rand_vec(20);
+    rand_vec = gen_rand_vec(20);
+    for(auto const& value: rand_vec)
+        std::cout << value << " " << std::endl;
     return 0;
 }
