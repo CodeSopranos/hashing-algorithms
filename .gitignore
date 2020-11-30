@@ -2,12 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+ ../.vs/
 algorithm/.vs
 algorithm/Debug
 algorithm/include/Debug
 # C extensions
 *.so
+.vs
 build-win-release
 # Distribution / packaging
 .Python
