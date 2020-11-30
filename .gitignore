@@ -5,11 +5,11 @@ __pycache__/
  ../.vs/
 algorithm/.vs
 algorithm/Debug
-algorithm/algorithm/Debug
+algorithm/include/Debug
 # C extensions
 *.so
 .vs
-build-win-release/
+build-win-release
 # Distribution / packaging
 .Python
 build/
