@@ -8,7 +8,7 @@ algorithm/Debug
 algorithm/include/Debug
 # C extensions
 *.so
-
+build-win-release
 # Distribution / packaging
 .Python
 build/
