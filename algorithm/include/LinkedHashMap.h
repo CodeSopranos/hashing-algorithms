@@ -1,9 +1,9 @@
 #pragma once
 
-
-#include "KeyHash.h"
-#include "HashNode.h"
 #include "VComparator.h"
+#include "UniversalHash.h"
+#include "LinkedHashNode.h"
+
 
 // Hash map class template
 template <typename K, typename V, size_t tableSize>

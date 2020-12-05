@@ -3,7 +3,7 @@
 #include <random>
 
 #include "utils.h"
-#include "HashMap.h"
+#include "LinkedHashMap.h"
 
 
 void testVectorLinkedHashMap()

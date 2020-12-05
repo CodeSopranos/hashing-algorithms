@@ -21,20 +21,21 @@ template <>
 class KeyHash<int>{
   private:
     size_t tableSize;
-    int a, b;
+    unsigned int a, b;
+    unsigned int p = 1721;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
       std::mt19937 mers(42);
-      std::uniform_int_distribution<int> a_uid(1, this->tableSize-1);
-      std::uniform_int_distribution<int> b_uid(0, this->tableSize-1);
+      std::uniform_int_distribution<int> a_uid(1, this->p-1);
+      std::uniform_int_distribution<int> b_uid(0, this->p-1);
       this->a = a_uid(mers);
       this->b = b_uid(mers);
     }
     unsigned long operator[](const int& key) const
     {
       // std::cout << this->a <<" "<< this->b << std::endl;
-      return (this->a * key + this->b)  % this->tableSize;
+      return ((this->a * key + this->b) % this->p )  % this->tableSize;
     }
 
 };
