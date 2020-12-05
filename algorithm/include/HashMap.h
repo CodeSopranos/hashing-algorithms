@@ -1,24 +1,26 @@
 #pragma once
 
+
 #include "KeyHash.h"
 #include "HashNode.h"
-
+#include "VComparator.h"
 
 // Hash map class template
-template <typename K, typename V, size_t tableSize, typename F = KeyHash<K, tableSize> >
+template <typename K, typename V, size_t tableSize>
 class HashMap
 {
 private:
     HashMap(const HashMap& other);
     const HashMap& operator=(const HashMap& other);
-    // hash table
     HashNode<K, V>* table[tableSize];
-    F hashFunc;
+    KeyHash<K> hashFunc;
+    VComparator<K> comp;
 
 public:
     HashMap() :
         table(),
-        hashFunc()
+        hashFunc(tableSize),
+        comp()
     {
     }
 
@@ -38,30 +40,33 @@ public:
         }
     }
 
-    bool get(const K& key, V& value)
+    bool search(const K& key, V& value)
     {
-        unsigned long hashValue = hashFunc(key);
+        unsigned long hashValue = hashFunc[key];
         HashNode<K, V>* entry = table[hashValue];
-
+        unsigned int ccounter = 0;
         while (entry != NULL) {
-            if (entry->getKey() == key) {
+            ccounter++;
+            // std::cout << "hashkey: "<< hashValue << " value: " << entry->getValue() <<std::endl;
+            if (comp.compare(entry->getKey(), key)) {
                 value = entry->getValue();
+                std::cout << "Number of tries: "<< ccounter <<std::endl;
                 return true;
             }
 
             entry = entry->getNext();
         }
-
+        std::cout << "Number of tries: "<< ccounter <<std::endl;
+        std::cout << "UKNOWN KEY!"<< std::endl;
         return false;
     }
 
-    void put(const K& key, const V& value)
+    void insert(const K& key, const V& value)
     {
-        unsigned long hashValue = hashFunc(key);
+        unsigned long hashValue = hashFunc[key];
         HashNode<K, V>* prev = NULL;
         HashNode<K, V>* entry = table[hashValue];
-
-        while (entry != NULL && entry->getKey() != key) {
+        while (entry != NULL && !comp.compare(entry->getKey(), key)) {
             prev = entry;
             entry = entry->getNext();
         }
@@ -87,11 +92,11 @@ public:
 
     void remove(const K& key)
     {
-        unsigned long hashValue = hashFunc(key);
+        unsigned long hashValue = hashFunc[key];
         HashNode<K, V>* prev = NULL;
         HashNode<K, V>* entry = table[hashValue];
 
-        while (entry != NULL && entry->getKey() != key) {
+        while (entry != NULL && !comp.compare(entry->getKey(), key)) {
             prev = entry;
             entry = entry->getNext();
         }
