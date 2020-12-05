@@ -6,10 +6,6 @@
 #include <random>
 
 #include "utils.h"
-#include "VComparator.h"
-#include "HashNode.h"
-#include "KeyHash.h"
-#include "HashMap.h"
 
 
 int main() {
@@ -41,10 +37,10 @@ int main() {
     }
     */
 
-    //test integer number hashing()
-    // std::cout << "Linked Hashing Numbers:\n";
-    // testNumberLinkedHashMap();
-    //test vector of integer number hashing()
+    // test integer number hashing
+    std::cout << "Linked Hashing Numbers:\n";
+    testNumberLinkedHashMap();
+    //test vector of integer number hashing
     std::cout << "Linked Hashing Vectors:\n";
     testVectorLinkedHashMap();
 

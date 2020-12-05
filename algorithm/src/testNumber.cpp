@@ -1,15 +1,15 @@
 #include <iostream>
 #include <vector>
+#include <iterator>
 #include <random>
 
 #include "utils.h"
-#include "HashMap.h"
+#include "LinkedHashMap.h"
 
 
 void testNumberLinkedHashMap()
 {
-  std::cout << "\nEnter tableSize: ";
-  const auto tableSize = 71;
+  const size_t tableSize = 100;
 
   std::size_t vecSize;
   std::cout << "\nEnter vecSize: ";
