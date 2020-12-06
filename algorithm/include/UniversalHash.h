@@ -1,6 +1,7 @@
 #pragma once
 #include <random>
 #include <math.h>
+#include <string>
 
 template <typename K>
 class KeyHash{
@@ -22,7 +23,7 @@ class KeyHash<int>{
   private:
     size_t tableSize;
     unsigned int a, b;
-    unsigned int p = 1721;
+    unsigned int p = 3571;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
@@ -45,19 +46,45 @@ template <>
 class KeyHash<std::vector<int>>{
   private:
     size_t tableSize;
-    int a;
+    unsigned int a, p = 3571;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
       std::mt19937 mers(42);
-      std::uniform_int_distribution<int> a_uid(1, this->tableSize-1);
+      std::uniform_int_distribution<int> a_uid(1, this->p-1);
       this->a = a_uid(mers);
+
     }
     unsigned long operator[](const std::vector<int>& key) const
     {
       unsigned long hkey = 0;
-      for (int i=0; i<key.size(); i++){
-          hkey += ((int)pow(this->a, i) * key[i]) % this->tableSize;
+      for (auto i=0; i<key.size(); i++){
+          hkey = ((hkey * this->a) + key[i]) % this->p;
+      }
+      return hkey % this->tableSize;
+    }
+
+};
+
+
+template <>
+class KeyHash<std::string>{
+  private:
+    size_t tableSize;
+    unsigned int a, p = 3571;
+  public:
+    KeyHash(size_t tableSize){
+      this->tableSize = tableSize;
+      std::mt19937 mers(42);
+      std::uniform_int_distribution<int> a_uid(1, this->p-1);
+      this->a = a_uid(mers);
+
+    }
+    unsigned long operator[](const std::string key) const
+    {
+      unsigned long hkey = 0;
+      for (auto i=0; i<key.size(); i++){
+          hkey = ((hkey * this->a) + key[i]) % this->p;
       }
       return hkey % this->tableSize;
     }
