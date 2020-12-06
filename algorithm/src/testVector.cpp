@@ -18,7 +18,7 @@ void testVectorLinkedHashMap()
   std::cin >> itemSize;
   std::vector<std::vector<int>> randVec;
   for(auto i=0; i < vecSize; i++)
-    randVec.push_back(genRandVec(itemSize));
+    randVec.push_back(genRandVec(itemSize, 0, 1000));
 
   // building hashMap
   HashMap <std::vector<int>, std::vector<int>, tableSize> hmap;
