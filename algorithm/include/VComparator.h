@@ -1,6 +1,5 @@
 #pragma once
-#include <random>
-#include <math.h>
+#include <string>
 #include <iostream>
 
 template <typename L>
@@ -32,11 +31,23 @@ public:
   bool compare(std::vector<int> a, std::vector<int> b){
     if (a.size() != b.size())
         return false;
-    for(auto i=0; i<a.size(); i++)
+    for(auto i=0; i<a.size(); i++){
       if (a[i] != b[i])
         return false;
+    }
     return true;
 
+  }
+
+};
+
+template <>
+class VComparator<std::string>
+{
+public:
+  VComparator(){};
+  bool compare(std::vector<int> a, std::vector<int> b){
+    return a == b;
   }
 
 };

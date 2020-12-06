@@ -8,8 +8,7 @@
 
 void testVectorLinkedHashMap()
 {
-  std::cout << "\nEnter tableSize: ";
-  const auto tableSize = 71;// = [](int t){ return std::cin >> t, t; }({});
+  const size_t tableSize = 100;
 
   std::size_t vecSize, itemSize;
   std::cout << "\nEnter vecSize: ";
@@ -23,12 +22,12 @@ void testVectorLinkedHashMap()
   // building hashMap
   HashMap <std::vector<int>, std::vector<int>, tableSize> hmap;
   for(auto const& vec: randVec){
-      std::cout << "[ ";
-      for(auto const& value: vec)
-      {
-        std::cout << value << " ";
-      }
-      std::cout << "]"<<std::endl;
+      // std::cout << "[ ";
+      // for(auto const& value: vec)
+      // {
+      //   std::cout << value << " ";
+      // }
+      // std::cout << "]"<<std::endl;
       hmap.insert(vec, vec);
   }
 
