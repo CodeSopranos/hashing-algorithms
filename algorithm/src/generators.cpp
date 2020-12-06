@@ -6,16 +6,20 @@
 #include <random>
 #include <algorithm>
 
-std::vector<int> gen_rand_vec(int N){
-   std::random_device rd;
-   std::mt19937 mersenne(rd()); // инициализируем Вихрь Мерсенна случайным стартовым числом
-
-   #include <vector>
 
 
-   std::vector<int> rand_vec(N);
-   std::generate(rand_vec.begin(), rand_vec.end(), mersenne);
+int genRandomUid(){
+    std::random_device rd;
+    std::mt19937 mersenne(rd()); // инициализируем Вихрь Мерсенна случайным стартовым числом
+    std::uniform_int_distribution<int> uid(0, 1000);
+    return uid(mersenne);
+}
+
+std::vector<int> genRandVec(int N){
+
+   std::vector<int> randVec(N);
+   std::generate(randVec.begin(), randVec.end(), genRandomUid);
 
 
-  return rand_vec;
+  return randVec;
  }
