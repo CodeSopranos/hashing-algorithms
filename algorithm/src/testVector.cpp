@@ -4,6 +4,7 @@
 
 #include "utils.h"
 #include "LinkedHashMap.h"
+#include "OpenedHashMap.h"
 
 
 void testVectorLinkedHashMap()
