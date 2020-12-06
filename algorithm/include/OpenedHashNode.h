@@ -29,4 +29,9 @@ public:
     {
         _value = value;
     }
+
+    void setKey(K key)
+    {
+        _key = key;
+    }
 };

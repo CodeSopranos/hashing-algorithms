@@ -38,11 +38,11 @@ int main() {
     */
 
     // test integer number hashing
-    // std::cout << "Linked Hashing Numbers:\n";
-    // testNumberLinkedHashMap();
+    std::cout << "Linked Hashing Numbers:\n";
+    testNumberLinkedHashMap();
     //test vector of integer number hashing
-    std::cout << "Linked Hashing Vectors:\n";
-    testVectorLinkedHashMap();
+    // std::cout << "Linked Hashing Vectors:\n";
+    // testVectorLinkedHashMap();
 
     return 0;
 }
