@@ -50,14 +50,14 @@ public:
             // std::cout << "hashkey: "<< hashValue << " value: " << entry->getValue() <<std::endl;
             if (comp.compare(entry->getKey(), key)) {
                 value = entry->getValue();
-                std::cout << "Number of tries: "<< ccounter <<std::endl;
+                // std::cout << "Number of tries: "<< ccounter <<std::endl;
                 return true;
             }
 
             entry = entry->getNext();
         }
-        std::cout << "Number of tries: "<< ccounter <<std::endl;
-        std::cout << "UKNOWN KEY!"<< std::endl;
+        // std::cout << "Number of tries: "<< ccounter <<std::endl;
+        // std::cout << "UKNOWN KEY!"<< std::endl;
         return false;
     }
 

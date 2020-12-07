@@ -38,19 +38,23 @@ public:
         unsigned int attempt = 0;
         unsigned long hashValue = hashFunc[key];
         HashNode<K, V>* entry = table[hashValue];
-        while (entry != NULL) {
+        while (entry != NULL && entry->getKey() != DELETED) {
             attempt++;
             hashValue = (hashFunc[key] + attempt) % tableSize;
             entry = table[hashValue];
             if (attempt >= tableSize-1)
             {
-              std::cout << "Opend Hash Table is full!";
+              std::cout << "Opened Hash Table is full!";
               return;
 
             }
         }
         if (entry == NULL) {
             entry = new HashNode<K, V>(key, value);
+        }
+        else if (entry->getKey() == DELETED) {
+            entry->setKey(key);
+            entry->setValue(value);
         }
         else {
             entry->setValue(value);
@@ -74,7 +78,7 @@ public:
             entry = table[hashValue];
             if (attempt >= tableSize-1)
             {
-              std::cout << "Opend Hash Table is full!";
+              std::cout << "Opened Hash Table is full!";
               std::cout << "Number of tries: "<< attempt <<std::endl;
               std::cout << "UKNOWN KEY!"<< std::endl;
               return false;
@@ -97,7 +101,7 @@ public:
             entry = table[hashValue];
             if (attempt >= tableSize-1)
             {
-              std::cout << "Opend Hash Table is full!";
+              std::cout << "Opened Hash Table is full!";
               std::cout << "Number of tries: "<< attempt <<std::endl;
               std::cout << "UKNOWN KEY!"<< std::endl;
               return;
@@ -112,6 +116,7 @@ public:
 
         }
         else {
+            entry -> setKey(DELETED);
             entry -> setValue(DELETED);
         }
     }
