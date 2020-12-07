@@ -1,7 +1,7 @@
 #pragma once
 
 // files utils
-void write_csv(std::string filename, std::vector<std::pair<std::string, std::vector<int>>> dataset);
+void write_csv(std::string filename, std::vector<std::pair<std::string, std::vector<std::string>>> dataset);
 std::vector<std::pair<std::string, std::vector<int>>> read_csv(std::string filename);
 
 // random generators
@@ -14,4 +14,5 @@ void unitTestLinkedHashMap();
 // performance evaluation
 void getPerformanceInteger();
 void getPerformanceIntegerLoop();
+void getPerformanceIntegerToFile();
 // void testVectorLinkedHashMap();

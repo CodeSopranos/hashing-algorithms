@@ -9,20 +9,6 @@
 // #include "LinkedHashMap.h"
 
 int main() {
-    // Make three vectors, each of length 100 filled with 1s, 2s, and 3s
-    // std::vector<int> vec1(10, 1);
-    // std::vector<int> vec2(10, 2);
-    // std::vector<int> vec3(10, 3);
-    //
-    // // Wrap into a vector
-    // std::vector<std::pair<std::string, std::vector<int>>> vals = { {"First", vec1}, {"Second", vec2}, {"Three", vec3} };
-    //
-    // std::string filepath = "../../data/outinsert/example.csv";
-    // Write the vector to CSV
-    /*
-    write_csv(filepath, vals);
-    */
-
     // read csv
     /*
     std::vector<std::pair<std::string, std::vector<int>>> file = read_csv(filepath);
@@ -44,7 +30,8 @@ int main() {
     // performance evaluation
     std::cout << "\n\n****Integer Numbers Hashing******";
     // getPerformanceInteger();
-    getPerformanceIntegerLoop();
+    // getPerformanceIntegerLoop();
+    getPerformanceIntegerToFile();
     //
     //
     // std::cout << "\n\n****Integer Vectors Hashing******";
