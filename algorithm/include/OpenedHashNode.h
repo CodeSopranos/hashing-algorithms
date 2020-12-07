@@ -7,7 +7,7 @@ class OpenHashNode
 private:
     K _key;
     V _value;
-    OpenHashNode(const HashNode&);
+    OpenHashNode(const OpenHashNode&);
     OpenHashNode& operator=(const OpenHashNode&);
 
 public:
