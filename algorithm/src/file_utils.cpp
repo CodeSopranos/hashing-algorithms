@@ -1,12 +1,13 @@
 #include <string>
 #include <fstream>
+#include <string>
 #include <vector>
 #include <utility> // std::pair
 #include <stdexcept> // std::runtime_error
 #include <sstream> // std::stringstream
 
 
-void write_csv(std::string filename, std::vector<std::pair<std::string, std::vector<int>>> dataset) {
+void write_csv(std::string filename, std::vector<std::pair<std::string, std::vector<std::string>>> dataset) {
 
     // Create an output filestream object
     std::ofstream myFile(filename);
