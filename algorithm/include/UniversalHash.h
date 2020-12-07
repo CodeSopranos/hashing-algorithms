@@ -2,7 +2,6 @@
 #include <random>
 #include <math.h>
 #include <string>
-// #include <time>
 
 template <typename K>
 class KeyHash{
@@ -34,7 +33,7 @@ class KeyHash<int>{
       std::uniform_int_distribution<int> b_uid(0, this->p-1);
       this->a = a_uid(mers);
       this->b = b_uid(mers);
-      std::cout<<"a " <<a <<" b "<<b<<std::endl;
+      // std::cout<<"a " <<a <<" b "<<b<<std::endl;
     }
     unsigned long operator[](const int& key) const
     {

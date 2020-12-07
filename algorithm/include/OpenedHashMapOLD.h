@@ -6,24 +6,22 @@
 
 const int DELETED = -1;
 
-template <typename K, typename V>
+template <typename K, typename V, size_t tableSize>
 class OpenHashMap
 {
 private:
     OpenHashMap(const OpenHashMap& other);
     const OpenHashMap& operator=(const OpenHashMap& other);
-    size_t tableSize;
-    OpenHashNode<K, V>** table;
+    OpenHashNode<K, V>* table[tableSize];
     VComparator<K> comp;
     KeyHash<K> hashFunc;
 
 public:
-   OpenHashMap(size_t tableSize):
+   OpenHashMap():
+        table(),
         hashFunc(tableSize),
         comp()
     {
-      this->tableSize = tableSize;
-      table = new OpenHashNode<K, V>*[tableSize]();
     }
 
     ~OpenHashMap()
