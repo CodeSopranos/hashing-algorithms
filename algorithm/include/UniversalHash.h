@@ -2,6 +2,7 @@
 #include <random>
 #include <math.h>
 #include <string>
+// #include <time>
 
 template <typename K>
 class KeyHash{
@@ -23,15 +24,17 @@ class KeyHash<int>{
   private:
     size_t tableSize;
     unsigned int a, b;
-    unsigned int p = 3571;
+    unsigned int p = 101027;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
-      std::mt19937 mers(42);
+      std::random_device randDev;
+      std::mt19937 mers(randDev());
       std::uniform_int_distribution<int> a_uid(1, this->p-1);
       std::uniform_int_distribution<int> b_uid(0, this->p-1);
       this->a = a_uid(mers);
       this->b = b_uid(mers);
+      std::cout<<"a " <<a <<" b "<<b<<std::endl;
     }
     unsigned long operator[](const int& key) const
     {
@@ -46,7 +49,7 @@ template <>
 class KeyHash<std::vector<int>>{
   private:
     size_t tableSize;
-    unsigned int a, p = 3571;
+    unsigned int a, p = 101027;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;

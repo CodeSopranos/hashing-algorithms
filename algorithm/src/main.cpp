@@ -6,7 +6,7 @@
 #include <random>
 
 #include "utils.h"
-
+#include "LinkedHashMap.h"
 
 int main() {
     // Make three vectors, each of length 100 filled with 1s, 2s, and 3s
@@ -37,12 +37,48 @@ int main() {
     }
     */
 
-    // test integer number hashing
-    std::cout << "Linked Hashing Numbers:\n";
-    testNumberLinkedHashMap();
+    // unit tests
+    // unitTestOpenHashMap();
+
+    // performance evaluation
+    std::cout << "\n\n****Integer Numbers Hashing******";
+    // getPerformanceInteger();
+    //
+    //
+    // std::cout << "\n\n****Integer Vectors Hashing******";
+
+
+
     //test vector of integer number hashing
-    // std::cout << "Linked Hashing Vectors:\n";
+    // std::cout << "Hashing Vectors:\n";
     // testVectorLinkedHashMap();
+    std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<int> t = {3, 4, 5, 9, 10, 20, 21, 6};
+    const size_t tableSize = 11;
+    HashMap<int, int> hmap(tableSize);
+    // hmap.displayHash();
+    for(auto const& value: v){
+        // std::cout << value << " ";
+        hmap.insert(value, value);
+    }
+    hmap.displayHash();
+    int value;
+    for(auto const& key: t){
+        // std::cout << value << " ";
+        if(hmap.search(key, value)){
+          std::cout<<" found " << key <<" "<< value<<std::endl;
+        }
+        else{
+            std::cout<<key<<" not found "<<std::endl;
+    }
+
+    }
+    for(auto const& value: v){
+        // std::cout << value << " ";
+        hmap.remove(value);
+    }
+    hmap.displayHash();
+
 
     return 0;
 }
