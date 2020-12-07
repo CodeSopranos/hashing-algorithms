@@ -24,9 +24,9 @@ public:
         comp()
     {
       this->tableSize = tableSize;
-      table = new HashNode<K, V>*[tableSize]();//(HashNode<K, V>*) malloc(tableSize*sizeof(HashNode<K, V>)); //ptr = (int*) malloc(5*sizeof(int));
+      table = new HashNode<K, V>*[tableSize]();
     }
-    void insert(const K& key, const V& value)
+    bool insert(const K& key, const V& value)
     {
         unsigned long hashValue = hashFunc[key];
         HashNode<K, V>* prev = NULL;
@@ -45,17 +45,21 @@ public:
             if (prev == NULL) {
                 // insert as first bucket
                 table[hashValue] = entry;
+                return true;
 
             }
             else {
                 prev->setNext(entry);
+                return true;
             }
 
         }
         else {
             // just update the value
             entry->setValue(value);
+            return true;
         }
+        return false;
     }
     bool search(const K& key, V& value)
     {
