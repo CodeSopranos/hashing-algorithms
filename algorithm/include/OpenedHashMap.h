@@ -3,6 +3,8 @@
 #include "VComparator.h"
 #include "UniversalHash.h"
 #include "OpenedHashNode.h"
+#include  "OpenedHash.h"
+
 
 const int DELETED = -1;
 
@@ -15,14 +17,13 @@ private:
     size_t tableSize;
     OpenHashNode<K, V>** table;
     VComparator<K> comp;
-    KeyHash<K> hashFunc;
-
+    OpenKeyHash<K> hashFunc;
 public:
-   OpenHashMap(size_t tableSize):
-        hashFunc(tableSize),
+   OpenHashMap(size_t tableSize, std::string hashType):
+        tableSize(tableSize),
+        hashFunc(tableSize, hashType),
         comp()
     {
-      this->tableSize = tableSize;
       table = new OpenHashNode<K, V>*[tableSize]();
     }
 
@@ -39,13 +40,15 @@ public:
     bool insert(const K& key, const V& value)
     {
         unsigned int attempt = 0;
-        unsigned long hashValue = hashFunc[key];
+        KeyAttempt<K> pairKA = {key, attempt};
+        unsigned long hashValue = hashFunc[pairKA];
         OpenHashNode<K, V>* entry = table[hashValue];
         // std::cout <<"\nkey: " << key << " hash: " << hashValue << std::endl;
         while (entry != NULL && entry->getKey() != DELETED) {
             attempt++;
             // std::cout << attempt << " ";
-            hashValue = (hashFunc[key] + attempt) % tableSize;
+            pairKA.attempt = attempt;
+            hashValue =  hashFunc[pairKA];
             entry = table[hashValue];
             if (attempt >= tableSize-1)
             {
@@ -76,7 +79,8 @@ public:
     bool search(const K& key, V& value)
     {
         unsigned int attempt = 0;
-        unsigned long hashValue = hashFunc[key];
+        KeyAttempt<K> pairKA = {key, attempt};
+        unsigned long hashValue = hashFunc[pairKA];
         OpenHashNode<K, V>* entry = table[hashValue];
         while (entry != NULL) {
             // std::cout << "hashkey: "<< hashValue << " value: " << entry->getValue() <<std::endl;
@@ -85,7 +89,8 @@ public:
                 return true;
             }
             attempt++;
-            hashValue = (hashFunc[key] + attempt) % tableSize;
+            pairKA.attempt = attempt;
+            hashValue = hashFunc[pairKA];//(hashFunc[key, attempt] + attempt) % tableSize;
             entry = table[hashValue];
             if (attempt >= tableSize-1)
             {
@@ -103,12 +108,14 @@ public:
     void remove(const K& key)
     {
         unsigned int attempt = 0;
-        unsigned long hashValue = hashFunc[key];
+        KeyAttempt<K> pairKA = {key, attempt};
+        unsigned long hashValue = hashFunc[pairKA];
         OpenHashNode<K, V>* entry = table[hashValue];
 
         while (entry != NULL && !comp.compare(entry->getKey(), key)) {
             attempt++;
-            hashValue = (hashFunc[key] + attempt) % tableSize;
+            pairKA.attempt = attempt;
+            hashValue = hashFunc[pairKA];//(hashFunc[key] + attempt) % tableSize;
             entry = table[hashValue];
             if (attempt >= tableSize-1)
             {
