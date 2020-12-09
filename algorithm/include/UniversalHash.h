@@ -72,12 +72,12 @@ template <>
 class KeyHash<std::string>{
   private:
     size_t tableSize;
-    unsigned int a, p = 3571;
+    unsigned int a, p = 379;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
       std::mt19937 mers(42);
-      std::uniform_int_distribution<int> a_uid(1, this->p-1);
+      std::uniform_int_distribution<int> a_uid(1, p-1);
       this->a = a_uid(mers);
 
     }

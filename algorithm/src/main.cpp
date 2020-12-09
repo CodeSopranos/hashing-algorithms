@@ -29,13 +29,19 @@ int main() {
 
     // performance evaluation
     std::cout << "\n\n****Integer Numbers Hashing******";
-    getPerformanceInteger();
+    // getPerformanceInteger();
     // getPerformanceIntegerLoop();
     // getPerformanceIntegerToFile();
     //
     //
     // std::cout << "\n\n****Integer Vectors Hashing******";
-
+    size_t N = 100;
+    // std::vector<std::string> sample;
+    auto sample = genRandStrings(N);
+    for(auto const& value: sample){
+        std::cout << value << std::endl;
+        // hmap.insert(value, value);
+    }
 
 
     //test vector of integer number hashing
