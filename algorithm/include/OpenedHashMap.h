@@ -6,7 +6,7 @@
 #include  "OpenedHash.h"
 
 
-const int DELETED = -1;
+const bool DELETED = true;
 
 template <typename K, typename V>
 class OpenHashMap
@@ -44,7 +44,7 @@ public:
         unsigned long hashValue = hashFunc[pairKA];
         OpenHashNode<K, V>* entry = table[hashValue];
         // std::cout <<"\nkey: " << key << " hash: " << hashValue << std::endl;
-        while (entry != NULL && entry->getKey() != DELETED) {
+        while (entry != NULL && entry->getState() != DELETED) {
             attempt++;
             // std::cout << attempt << " ";
             pairKA.attempt = attempt;
@@ -63,7 +63,7 @@ public:
             table[hashValue] = entry;
             return true;
         }
-        else if (entry->getKey() == DELETED) {
+        else if (entry->getState() == DELETED) {
             // std::cout << "entry == DELETED"<< std::endl;
             entry->setKey(key);
             entry->setValue(value);
@@ -134,8 +134,8 @@ public:
 
         }
         else {
-            entry -> setKey(DELETED);
-            entry -> setValue(DELETED);
+            entry -> setState(DELETED);
+            entry -> setState(DELETED);
         }
     }
 };

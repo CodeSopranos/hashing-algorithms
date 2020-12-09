@@ -111,17 +111,17 @@ void remove(const K& key)
           delete entry;
       }
   }
-    void displayHash() {
-    HashNode<K,V>* entry = NULL;
-    for (int i = 0; i < tableSize; i++) {
-      entry = table[i];
-      std::cout << i;
-      while (entry != NULL) {
-          std::cout << " -> " << entry->getKey();
-          entry = entry->getNext();
-      }
-      std::cout << std::endl;
-    }
-  }
+  //   void displayHash() {
+  //   HashNode<K,V>* entry = NULL;
+  //   for (int i = 0; i < tableSize; i++) {
+  //     entry = table[i];
+  //     std::cout << i;
+  //     while (entry != NULL) {
+  //         std::cout << " -> " << entry->getKey();
+  //         entry = entry->getNext();
+  //     }
+  //     std::cout << std::endl;
+  //   }
+  // }
 
 };

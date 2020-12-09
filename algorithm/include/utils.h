@@ -17,4 +17,6 @@ void unitTestLinkedHashMap();
 void getPerformanceInteger();
 void getPerformanceIntegerLoop();
 void getPerformanceIntegerToFile();
+
+void getPerformanceString();
 // void testVectorLinkedHashMap();

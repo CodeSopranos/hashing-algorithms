@@ -7,6 +7,7 @@ class OpenHashNode
 private:
     K _key;
     V _value;
+    bool isDeleted = false;
     // OpenHashNode(const OpenHashNode&);
     // OpenHashNode& operator=(const OpenHashNode&);
 
@@ -35,4 +36,15 @@ public:
     {
         _key = key;
     }
+
+    void setState(bool state)
+    {
+        isDeleted = state;
+    }
+
+    bool getState() const
+    {
+        return isDeleted;
+    }
+
 };

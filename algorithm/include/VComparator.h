@@ -46,7 +46,7 @@ class VComparator<std::string>
 {
 public:
   VComparator(){};
-  bool compare(std::vector<int> a, std::vector<int> b){
+  bool compare(std::string a, std::string b){
     return a == b;
   }
 
