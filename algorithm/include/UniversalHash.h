@@ -8,9 +8,8 @@ class KeyHash{
   private:
     size_t tableSize;
   public:
-    KeyHash(size_t tableSize){
-      this->tableSize = tableSize;
-    }
+    KeyHash(size_t tableSize) : tableSize(tableSize) {}
+
     unsigned long operator[](const K& key) const
     {
       return reinterpret_cast<unsigned long>(key) % this->tableSize;

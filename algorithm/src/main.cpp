@@ -29,9 +29,9 @@ int main() {
 
     // performance evaluation
     std::cout << "\n\n****Integer Numbers Hashing******";
-    // getPerformanceInteger();
+    getPerformanceInteger();
     // getPerformanceIntegerLoop();
-    getPerformanceIntegerToFile();
+    // getPerformanceIntegerToFile();
     //
     //
     // std::cout << "\n\n****Integer Vectors Hashing******";

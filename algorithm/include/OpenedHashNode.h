@@ -12,9 +12,10 @@ private:
 
 public:
     OpenHashNode(const K& key, const V& value) :
-        _key(key), _value(value)
-    {
-    }
+        _key(key),
+        _value(value)
+    {}
+
     K getKey() const
     {
         return _key;
