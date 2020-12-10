@@ -8,9 +8,8 @@ class KeyHash{
   private:
     size_t tableSize;
   public:
-    KeyHash(size_t tableSize){
-      this->tableSize = tableSize;
-    }
+    KeyHash(size_t tableSize) : tableSize(tableSize) {}
+
     unsigned long operator[](const K& key) const
     {
       return reinterpret_cast<unsigned long>(key) % this->tableSize;
@@ -23,15 +22,17 @@ class KeyHash<int>{
   private:
     size_t tableSize;
     unsigned int a, b;
-    unsigned int p = 3571;
+    unsigned int p = 101027;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
-      std::mt19937 mers(42);
+      std::random_device randDev;
+      std::mt19937 mers(randDev());
       std::uniform_int_distribution<int> a_uid(1, this->p-1);
       std::uniform_int_distribution<int> b_uid(0, this->p-1);
       this->a = a_uid(mers);
       this->b = b_uid(mers);
+      // std::cout<<"a " <<a <<" b "<<b<<std::endl;
     }
     unsigned long operator[](const int& key) const
     {
@@ -46,7 +47,7 @@ template <>
 class KeyHash<std::vector<int>>{
   private:
     size_t tableSize;
-    unsigned int a, p = 3571;
+    unsigned int a, p = 101027;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
@@ -71,12 +72,12 @@ template <>
 class KeyHash<std::string>{
   private:
     size_t tableSize;
-    unsigned int a, p = 3571;
+    unsigned int a, p = 379;
   public:
     KeyHash(size_t tableSize){
       this->tableSize = tableSize;
       std::mt19937 mers(42);
-      std::uniform_int_distribution<int> a_uid(1, this->p-1);
+      std::uniform_int_distribution<int> a_uid(1, p-1);
       this->a = a_uid(mers);
 
     }

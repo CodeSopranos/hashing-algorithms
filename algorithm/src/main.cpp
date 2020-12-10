@@ -6,23 +6,9 @@
 #include <random>
 
 #include "utils.h"
-
+// #include "LinkedHashMap.h"
 
 int main() {
-    // Make three vectors, each of length 100 filled with 1s, 2s, and 3s
-    // std::vector<int> vec1(10, 1);
-    // std::vector<int> vec2(10, 2);
-    // std::vector<int> vec3(10, 3);
-    //
-    // // Wrap into a vector
-    // std::vector<std::pair<std::string, std::vector<int>>> vals = { {"First", vec1}, {"Second", vec2}, {"Three", vec3} };
-    //
-    // std::string filepath = "../../data/outinsert/example.csv";
-    // Write the vector to CSV
-    /*
-    write_csv(filepath, vals);
-    */
-
     // read csv
     /*
     std::vector<std::pair<std::string, std::vector<int>>> file = read_csv(filepath);
@@ -37,12 +23,59 @@ int main() {
     }
     */
 
-    // test integer number hashing
-    std::cout << "Linked Hashing Numbers:\n";
-    testNumberLinkedHashMap();
+    // unit tests
+    unitTestLinkedHashMap();
+    unitTestOpenHashMap();
+
+    // performance evaluation
+    std::cout << "\n\n****Integer Numbers Hashing******";
+    getPerformanceInteger();
+    // getPerformanceIntegerLoop();
+    // getPerformanceIntegerToFile();
+    //
+    //
+    // std::cout << "\n\n****Integer Vectors Hashing******";
+    std::cout << "\n\n****Strings  Hashing******";
+    getPerformanceString();
+    // size_t N = 100;
+    // // std::vector<std::string> sample;
+    // auto sample = genRandStrings(N);
+    // for(auto const& value: sample){
+    //     std::cout << value << std::endl;
+    //     // hmap.insert(value, value);
+    // }
+
+
     //test vector of integer number hashing
-    // std::cout << "Linked Hashing Vectors:\n";
+    // std::cout << "Hashing Vectors:\n";
     // testVectorLinkedHashMap();
+    // std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    // std::vector<int> t = {3, 4, 5, 9, 10, 20, 21, 6};
+    // const size_t tableSize = 11;
+    // HashMap<int, int> hmap(tableSize);
+    // // hmap.displayHash();
+    // for(auto const& value: v){
+    //     // std::cout << value << " ";
+    //     hmap.insert(value, value);
+    // }
+    // hmap.displayHash();
+    // int value;
+    // for(auto const& key: t){
+    //     // std::cout << value << " ";
+    //     if(hmap.search(key, value)){
+    //       std::cout<<" found " << key <<" "<< value<<std::endl;
+    //     }
+    //     else{
+    //         std::cout<<key<<" not found "<<std::endl;
+    // }
+    //
+    // }
+    // for(auto const& value: v){
+    //     // std::cout << value << " ";
+    //     hmap.remove(value);
+    // }
+    // hmap.displayHash();
+
 
     return 0;
 }
