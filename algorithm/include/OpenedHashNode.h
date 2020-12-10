@@ -9,7 +9,7 @@ private:
     V _value;
     bool isDeleted = false;
     // OpenHashNode(const OpenHashNode&);
-    // OpenHashNode& operator=(const OpenHashNode&);
+    OpenHashNode& operator=(const OpenHashNode&);
 
 public:
     OpenHashNode(const K& key, const V& value) :

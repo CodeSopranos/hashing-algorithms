@@ -24,7 +24,7 @@ class KeyHash<int>{
     unsigned int a, b;
     unsigned int p = 101027;
   public:
-    KeyHash(size_t tableSize){
+    KeyHash(size_t tableSize, int seed=0){
       this->tableSize = tableSize;
       std::random_device randDev;
       std::mt19937 mers(randDev());
@@ -88,6 +88,38 @@ class KeyHash<std::string>{
           hkey = ((hkey * this->a) + key[i]) % this->p;
       }
       return hkey % this->tableSize;
+    }
+
+};
+
+template <typename K>
+class KeyHashTest{
+private:
+    size_t tableSize;
+public:
+    KeyHashTest(size_t tableSize) : tableSize(tableSize) {}
+
+    unsigned long operator[](const K& key) const
+    {
+        return reinterpret_cast<unsigned long>(key) % this->tableSize;
+    }
+
+};
+
+template <>
+class KeyHashTest<int>{
+private:
+    size_t tableSize;
+    unsigned int a, b, p;
+public:
+    KeyHashTest(size_t tableSize_, unsigned int a_, unsigned int b_, unsigned int p_ = 101) :
+            tableSize(tableSize_), a(a_), b(b_), p(p_)
+    {
+    }
+    unsigned long operator[](const int& key) const
+    {
+        // std::cout << this->a <<" "<< this->b << std::endl;
+        return ((this->a * key + this->b) % this->p )  % this->tableSize;
     }
 
 };
