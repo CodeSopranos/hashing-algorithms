@@ -11,7 +11,7 @@ std::vector<std::string> genRandStrings(size_t);
 
 // unit tests
 void unitTestOpenHashMap();
-void unitTestLinkedHashMap();
+void unitTestChainedHashMap();
 
 // performance evaluation
 void getPerformanceInteger();

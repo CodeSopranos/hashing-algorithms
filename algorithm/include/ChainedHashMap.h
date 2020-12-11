@@ -2,7 +2,7 @@
 #include <list>
 #include "VComparator.h"
 #include "UniversalHash.h"
-#include "LinkedHashNode.h"
+#include "ChainedHashNode.h"
 
 
 // Hash map class template
@@ -28,7 +28,7 @@ public:
     }
     bool insert(const K& key, const V& value)
     {
-        unsigned long hashValue = hashFunc[key];
+        unsigned int hashValue = hashFunc[key];
         HashNode<K, V>* prev = NULL;
         HashNode<K, V>* entry = table[hashValue];
         // std::cout << "before while" << &entry <<std::endl;
@@ -63,7 +63,7 @@ public:
     }
     bool search(const K& key, V& value)
     {
-    unsigned long hashValue = hashFunc[key];
+    unsigned int hashValue = hashFunc[key];
     HashNode<K, V>* entry = table[hashValue];
     unsigned int ccounter = 0;
     while (entry != NULL) {
@@ -84,7 +84,7 @@ public:
 
 void remove(const K& key)
 {
-      unsigned long hashValue = hashFunc[key];
+      unsigned int hashValue = hashFunc[key];
       HashNode<K, V>* prev = NULL;
       HashNode<K, V>* entry = table[hashValue];
 

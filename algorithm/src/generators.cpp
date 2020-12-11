@@ -32,7 +32,7 @@ std::string genRandString(size_t stringLen){
      std::string resultStr;
      static std::random_device rd;
      static std::mt19937 mt(rd());
-     static std::uniform_int_distribution<int> dist(-29, 25);
+     static std::uniform_int_distribution<int> dist(-25, 25);
      for (int i = 0; i < stringLen; ++i) {
          resultStr += ('a' + dist(mt));
      }

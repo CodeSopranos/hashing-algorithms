@@ -1,15 +1,23 @@
+#define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS 1
+
 #include <iostream>
 #include <vector>
 #include <iterator>
 #include <random>
 #include <chrono>
 
+// standart maps
+#include <map>
+#include <hash_map>
+
+//our implementation
 #include "utils.h"
-#include "LinkedHashMap.h"
+#include "ChainedHashMap.h"
 #include "OpenedHashMap.h"
 
 using namespace std;
 using namespace std::chrono;
+
 
 void getPerformanceInteger()
 {
@@ -25,20 +33,96 @@ void getPerformanceInteger()
   baseVec = genRandVec(vecSize, 0, 100000);
   testVec = genRandVec(testSize, 0, 100000);
 
-  /*      Linked Hash Map part            */
-  cout << "*****Linked Hash map*******" << endl;
+  /*      std::map part            */
+  cout << "\n*******STD::MAP*************" << endl;
+  std::map<int, int> stdMap;
+  for(auto const& value: baseVec){
+      // cout << "[" << value << "]" << endl;
+      stdMap.insert(std::make_pair(value, value));
+  }
+  // test inserts
+  auto start = high_resolution_clock::now();
+  for(auto const& value: testVec){
+      stdMap.insert(std::make_pair(value, value));
+  }
+  auto stop = high_resolution_clock::now();
+  float duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average insert time: "
+            << duration / testSize << " microsec" << endl;
+
+  // test search
+  std::map<int, int>::iterator it;
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    it = stdMap.find(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average search time: "
+            << duration / testSize << " microsec" << endl;
+   // test delete
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    stdMap.erase(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average delete time: "
+            << duration / testSize << " microsec" << endl;
+
+
+   /*      std::map part            */
+  cout << "\n*******STD::HASH_MAP*************" << endl;
+  std::hash_map<int, int> stdHashMap;
+  for(auto const& value: baseVec){
+      // cout << "[" << value << "]" << endl;
+      stdHashMap.insert(std::make_pair(value, value));
+  }
+  // test inserts
+  start = high_resolution_clock::now();
+  for(auto const& value: testVec){
+      stdHashMap.insert(std::make_pair(value, value));
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average insert time: "
+            << duration / testSize << " microsec" << endl;
+
+  // test search
+  std::hash_map<int, int>::iterator hit;
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    hit = stdHashMap.find(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average search time: "
+            << duration / testSize << " microsec" << endl;
+   // test delete
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    stdHashMap.erase(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average delete time: "
+            << duration / testSize << " microsec" << endl;
+
+
+  /*      Chained Hash Map part            */
+  cout << "\n****Chained Hash map*******" << endl;
   HashMap <int, int> hFixmap(tableSize);
   for(auto const& value: baseVec){
       // cout << "[" << value << "]" << endl;
       hFixmap.insert(value, value);
   }
   // test inserts
-  auto start = high_resolution_clock::now();
+  start = high_resolution_clock::now();
   for(auto const& value: testVec){
       hFixmap.insert(value, value);
   }
-  auto stop = high_resolution_clock::now();
-  float duration = duration_cast<microseconds>(stop - start).count();
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
   cout << "Average insert time: "
             << duration / testSize << " microsec" << endl;
   // test search
@@ -97,7 +181,41 @@ void getPerformanceInteger()
             << duration / testSize << " microsec" << endl;
 
   cout << "\n*****Opened Hash map __QUADRATIC__*******" << endl;
-  OpenHashMap<int, int> openHmapDbl(tableSize,  "QUADRATIC");
+  OpenHashMap<int, int> openHmapQdr(tableSize,  "QUADRATIC");
+  for(auto const& value: baseVec){
+      openHmapQdr.insert(value, value);
+  }
+  // test inserts
+  start = high_resolution_clock::now();
+  for(auto const& value: testVec){
+      openHmapQdr.insert(value, value);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average insert time: "
+            << duration / testSize << " microsec" << endl;
+  // test search
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    openHmapQdr.search(key, value);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average search time: "
+            << duration / testSize << " microsec" << endl;
+  // test delete
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    openHmapQdr.remove(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average delete time: "
+            << duration / testSize << " microsec" << endl;
+
+
+  cout << "\n*****Opened Hash map __DOUBLE__*******" << endl;
+  OpenHashMap<int, int> openHmapDbl(tableSize,  "DOUBLE");
   for(auto const& value: baseVec){
       openHmapDbl.insert(value, value);
   }
@@ -151,8 +269,8 @@ void getPerformanceInteger()
 //
 //     cout<<"\n*****M = "<< tableSize << ", N = " << vecSize << ", Actions = " << testSize
 //              << " *****" << endl;
-//     /*      Linked Hash Map part            */
-//     cout << "Linked Hash map" << endl;
+//     /*      Chained Hash Map part            */
+//     cout << "Chained Hash map" << endl;
 //     HashMap <int, int> hFixmap(tableSize);
 //     for(auto const& value: baseVec){
 //         hFixmap.insert(value, value);
@@ -238,9 +356,9 @@ void getPerformanceInteger()
 //
 //   string filepath = "../data/output/integerPerformanceM2N.csv";
 //   vector<string> HashTableSize, DataSize;
-//   vector<string> insertLinkedTime, insertOpenedTime, insertCocooTime;
-//   vector<string> searchLinkedTime, searchOpenedTime, searchCocooTime;
-//   vector<string> deleteLinkedTime, deleteOpenedTime, deleteCocooTime;
+//   vector<string> insertChainedTime, insertOpenedTime, insertCocooTime;
+//   vector<string> searchChainedTime, searchOpenedTime, searchCocooTime;
+//   vector<string> deleteChainedTime, deleteOpenedTime, deleteCocooTime;
 //
 //   for (auto i=1; i<=1000; ++i){
 //
@@ -264,7 +382,7 @@ void getPerformanceInteger()
 //     }
 //     auto stop = high_resolution_clock::now();
 //     float duration = duration_cast<microseconds>(stop - start).count();
-//     insertLinkedTime.push_back(to_string(duration / testSize));
+//     insertChainedTime.push_back(to_string(duration / testSize));
 //
 //     // test search
 //     int value;
@@ -274,7 +392,7 @@ void getPerformanceInteger()
 //     }
 //     stop = high_resolution_clock::now();
 //     duration = duration_cast<microseconds>(stop - start).count();
-//     searchLinkedTime.push_back(to_string(duration / testSize));
+//     searchChainedTime.push_back(to_string(duration / testSize));
 //
 //     // test delete
 //     start = high_resolution_clock::now();
@@ -283,7 +401,7 @@ void getPerformanceInteger()
 //     }
 //     stop = high_resolution_clock::now();
 //     duration = duration_cast<microseconds>(stop - start).count();
-//     deleteLinkedTime.push_back(to_string(duration / testSize));
+//     deleteChainedTime.push_back(to_string(duration / testSize));
 //
 //
 //     /*      Opened Hash Map part          */
@@ -326,9 +444,9 @@ void getPerformanceInteger()
 //   vector<pair<string,
 //               vector<string>>> vals = {   {"TableSize", HashTableSize},
 //                                           {"DataSize", DataSize},
-//                                           {"insertLinkedTime", insertLinkedTime},
-//                                           {"searchLinkedTime", searchLinkedTime},
-//                                           {"deleteLinkedTime", deleteLinkedTime},
+//                                           {"insertChainedTime", insertChainedTime},
+//                                           {"searchChainedTime", searchChainedTime},
+//                                           {"deleteChainedTime", deleteChainedTime},
 //                                           {"insertOpenedTime", insertOpenedTime},
 //                                           {"searchOpenedTime", searchOpenedTime},
 //                                           {"deleteOpenedTime", deleteOpenedTime},

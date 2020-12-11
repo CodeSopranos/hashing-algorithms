@@ -1,11 +1,17 @@
+#define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS 1
+
 #include <iostream>
 #include <vector>
 #include <iterator>
 #include <random>
 #include <chrono>
 
+// standart maps
+#include <map>
+#include <hash_map>
+
 #include "utils.h"
-#include "LinkedHashMap.h"
+#include "ChainedHashMap.h"
 #include "OpenedHashMap.h"
 
 using namespace std;
@@ -13,9 +19,9 @@ using namespace std::chrono;
 
 void getPerformanceString()
 {
-  const size_t tableSize = 5000;
+  const size_t tableSize = 5001;
 
-  size_t testSize, vecSize = 2500;
+  size_t testSize, vecSize = 2001;
   // cout << "\nEnter baseSize: ";
   // cin >> vecSize;
   cout << "\nEnter testSize: ";
@@ -25,20 +31,95 @@ void getPerformanceString()
   baseVec = genRandStrings(vecSize);
   testVec = genRandStrings(testSize);
 
-  /*      Linked Hash Map part            */
-  cout << "*****Linked Hash map*******" << endl;
+  /*      std::map part            */
+  cout << "\n*******STD::MAP*************" << endl;
+  std::map<string, string> stdMap;
+  for(auto const& value: baseVec){
+      // cout << "[" << value << "]" << endl;
+      stdMap.insert(std::make_pair(value, value));
+  }
+  // test inserts
+  auto start = high_resolution_clock::now();
+  for(auto const& value: testVec){
+      stdMap.insert(std::make_pair(value, value));
+  }
+  auto stop = high_resolution_clock::now();
+  float duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average insert time: "
+            << duration / testSize << " microsec" << endl;
+
+  // test search
+  std::map<string, string>::iterator it;
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    it = stdMap.find(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average search time: "
+            << duration / testSize << " microsec" << endl;
+   // test delete
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    stdMap.erase(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average delete time: "
+            << duration / testSize << " microsec" << endl;
+
+
+   /*      std::map part            */
+  cout << "\n*******STD::HASH_MAP*************" << endl;
+  std::hash_map<string, string> stdHashMap;
+  for(auto const& value: baseVec){
+      // cout << "[" << value << "]" << endl;
+      stdHashMap.insert(std::make_pair(value, value));
+  }
+  // test inserts
+  start = high_resolution_clock::now();
+  for(auto const& value: testVec){
+      stdHashMap.insert(std::make_pair(value, value));
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average insert time: "
+            << duration / testSize << " microsec" << endl;
+
+  // test search
+  std::hash_map<string, string>::iterator hit;
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    hit = stdHashMap.find(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average search time: "
+            << duration / testSize << " microsec" << endl;
+   // test delete
+  start = high_resolution_clock::now();
+  for(auto const& key: testVec){
+    stdHashMap.erase(key);
+  }
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
+  cout << "Average delete time: "
+            << duration / testSize << " microsec" << endl;
+
+  /*      Chained Hash Map part            */
+  cout << "\n*****Chained Hash map*******" << endl;
   HashMap <string, string> hFixmap(tableSize);
   for(auto const& value: baseVec){
       // cout << "[" << value << "]" << endl;
       hFixmap.insert(value, value);
   }
   // test inserts
-  auto start = high_resolution_clock::now();
+  start = high_resolution_clock::now();
   for(auto const& value: testVec){
       hFixmap.insert(value, value);
   }
-  auto stop = high_resolution_clock::now();
-  float duration = duration_cast<microseconds>(stop - start).count();
+  stop = high_resolution_clock::now();
+  duration = duration_cast<microseconds>(stop - start).count();
   cout << "Average insert time: "
             << duration / testSize << " microsec" << endl;
   // test search

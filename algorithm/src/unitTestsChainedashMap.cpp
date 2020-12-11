@@ -6,12 +6,12 @@
 #include <random>
 
 #include "utils.h"
-#include "LinkedHashMap.h"
+#include "ChainedHashMap.h"
 
 std::map<bool, std::string> tresult = {{false, "FAILED" }, { true, "PASSED" }};
 
-void unitTestLinkedHashMap(){
-  std::cout << "\n*****Unit tets: Linked Hash map*******" << std::endl;
+void unitTestChainedHashMap(){
+  std::cout << "\n*****Unit tets: Chained Hash map*******" << std::endl;
 
   //test 1
   std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
