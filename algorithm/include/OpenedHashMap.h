@@ -6,7 +6,7 @@
 #include  "OpenedHash.h"
 
 
-const int DELETED = -1;
+#define DELETED true
 
 template <typename K, typename V>
 class OpenHashMap
@@ -41,36 +41,38 @@ public:
     {
         unsigned int attempt = 0;
         KeyAttempt<K> pairKA = {key, attempt};
-        unsigned long hashValue = hashFunc[pairKA];
+        unsigned int hashValue = hashFunc[pairKA];
         OpenHashNode<K, V>* entry = table[hashValue];
         // std::cout <<"\nkey: " << key << " hash: " << hashValue << std::endl;
-        while (entry != NULL && entry->getKey() != DELETED) {
+        while (entry != NULL && entry->getState() != DELETED) {
             attempt++;
             // std::cout << attempt << " ";
             pairKA.attempt = attempt;
             hashValue =  hashFunc[pairKA];
             entry = table[hashValue];
-            if (attempt >= tableSize-1)
+            if (attempt > tableSize)
             {
-              // std::cout << "Opened Hash Table is full!";
+              // std::cout << "Opened Hash Table is full! " << value << std::endl;
               return false;
 
             }
         }
         if (entry == NULL) {
             // std::cout << "entry == NULL"<< std::endl;
+            // std::cout << "entry set " << value << std::endl;
             entry = new OpenHashNode<K, V>(key, value);
             table[hashValue] = entry;
             return true;
         }
-        else if (entry->getKey() == DELETED) {
+        else if (entry->getState() == DELETED) {
             // std::cout << "entry == DELETED"<< std::endl;
             entry->setKey(key);
             entry->setValue(value);
+            entry->setState(!DELETED);
             return true;
         }
         else {
-            // std::cout << "entry set new value" << std::endl;
+            // std::cout << "entry set new value " << value << std::endl;
             entry->setValue(value);
             return true;
         }
@@ -80,19 +82,21 @@ public:
     {
         unsigned int attempt = 0;
         KeyAttempt<K> pairKA = {key, attempt};
-        unsigned long hashValue = hashFunc[pairKA];
+        unsigned int hashValue = hashFunc[pairKA];
         OpenHashNode<K, V>* entry = table[hashValue];
         while (entry != NULL) {
             // std::cout << "hashkey: "<< hashValue << " value: " << entry->getValue() <<std::endl;
-            if (comp.compare(entry->getKey(), key)) {
+            if (entry->getState() != DELETED) {
+              if (comp.compare(entry->getKey(), key)) {
                 value = entry->getValue();
                 return true;
+              }
             }
             attempt++;
             pairKA.attempt = attempt;
             hashValue = hashFunc[pairKA];//(hashFunc[key, attempt] + attempt) % tableSize;
             entry = table[hashValue];
-            if (attempt >= tableSize-1)
+            if (attempt > tableSize)
             {
               // std::cout << "Opened Hash Table is full!";
               // std::cout << "Number of tries: "<< attempt <<std::endl;
@@ -109,7 +113,7 @@ public:
     {
         unsigned int attempt = 0;
         KeyAttempt<K> pairKA = {key, attempt};
-        unsigned long hashValue = hashFunc[pairKA];
+        unsigned int hashValue = hashFunc[pairKA];
         OpenHashNode<K, V>* entry = table[hashValue];
 
         while (entry != NULL && !comp.compare(entry->getKey(), key)) {
@@ -117,7 +121,7 @@ public:
             pairKA.attempt = attempt;
             hashValue = hashFunc[pairKA];//(hashFunc[key] + attempt) % tableSize;
             entry = table[hashValue];
-            if (attempt >= tableSize-1)
+            if (attempt > tableSize-1)
             {
               // std::cout << "Opened Hash Table is full!";
               // std::cout << "Number of tries: "<< attempt <<std::endl;
@@ -134,8 +138,25 @@ public:
 
         }
         else {
-            entry -> setKey(DELETED);
-            entry -> setValue(DELETED);
+            entry -> setState(DELETED);
+            entry -> setState(DELETED);
         }
     }
+
+    void displayHash() {
+      std::cout  << std::endl;
+      for (int i = 0; i < tableSize; i++) {
+        std::cout << i;
+        if (table[i]){
+          if (!table[i]->getState())
+            std::cout << " -> " << table[i]->getKey() << std::endl;
+          else
+            std::cout << " -> NULL (DELETED)" << std::endl;
+        }
+        else
+          std::cout << " -> NULL" << std::endl;
+      }
+
+      std::cout  << std::endl;
+  }
 };

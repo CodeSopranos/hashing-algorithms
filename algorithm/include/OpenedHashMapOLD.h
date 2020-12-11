@@ -37,7 +37,7 @@ public:
     bool insert(const K& key, const V& value)
     {
         unsigned int attempt = 0;
-        unsigned long hashValue = hashFunc[key];
+        unsigned int hashValue = hashFunc[key];
         OpenHashNode<K, V>* entry = table[hashValue];
         // std::cout <<"\nkey: " << key << " hash: " << hashValue << std::endl;
         while (entry != NULL && entry->getKey() != DELETED) {
@@ -74,7 +74,7 @@ public:
     bool search(const K& key, V& value)
     {
         unsigned int attempt = 0;
-        unsigned long hashValue = hashFunc[key];
+        unsigned int hashValue = hashFunc[key];
         OpenHashNode<K, V>* entry = table[hashValue];
         while (entry != NULL) {
             // std::cout << "hashkey: "<< hashValue << " value: " << entry->getValue() <<std::endl;
@@ -101,7 +101,7 @@ public:
     void remove(const K& key)
     {
         unsigned int attempt = 0;
-        unsigned long hashValue = hashFunc[key];
+        unsigned int hashValue = hashFunc[key];
         OpenHashNode<K, V>* entry = table[hashValue];
 
         while (entry != NULL && !comp.compare(entry->getKey(), key)) {

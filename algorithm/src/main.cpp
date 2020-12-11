@@ -6,7 +6,8 @@
 #include <random>
 
 #include "utils.h"
-// #include "LinkedHashMap.h"
+// #include "ChainedHashMap.h"
+#include "OpenedHashMap.h"
 
 int main() {
     // read csv
@@ -24,7 +25,7 @@ int main() {
     */
 
     // unit tests
-    unitTestLinkedHashMap();
+    unitTestChainedHashMap();
     unitTestOpenHashMap();
 
     // performance evaluation
@@ -32,20 +33,27 @@ int main() {
     getPerformanceInteger();
     // getPerformanceIntegerLoop();
     // getPerformanceIntegerToFile();
-    //
-    //
-    // std::cout << "\n\n****Integer Vectors Hashing******";
+
+    std::cout << "\n\n****Strings  Hashing******";
+    getPerformanceString();
 
 
 
-    //test vector of integer number hashing
-    // std::cout << "Hashing Vectors:\n";
-    // testVectorLinkedHashMap();
+    // size_t N = 100;
+    // // std::vector<std::string> sample;
+    // auto sample = genRandStrings(N);
+    // for(auto const& value: sample){
+    //     std::cout << value << std::endl;
+    //     // hmap.insert(value, value);
+    // }
+
+    // std::cout << "\n\nUnit test OPEN hash \n\n";
     // std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     // std::vector<int> t = {3, 4, 5, 9, 10, 20, 21, 6};
-    // const size_t tableSize = 11;
-    // HashMap<int, int> hmap(tableSize);
-    // // hmap.displayHash();
+    // size_t tableSize = 9;
+    //
+    // OpenHashMap<int, int> hmap(tableSize, "LINEAR");
+    // hmap.displayHash();
     // for(auto const& value: v){
     //     // std::cout << value << " ";
     //     hmap.insert(value, value);
@@ -62,12 +70,64 @@ int main() {
     // }
     //
     // }
+    // for(auto const& value: t){
+    //     // std::cout << value << " ";
+    //     hmap.remove(value);
+    // }
+    // hmap.displayHash();
+    //
     // for(auto const& value: v){
     //     // std::cout << value << " ";
     //     hmap.remove(value);
     // }
     // hmap.displayHash();
+    //
+    // for(auto const& value: v){
+    //     // std::cout << value << " ";
+    //     hmap.insert(value, value);
+    // }
+    // hmap.displayHash();
 
+    // std::cout << "\n\nUnit test OPEN hash STRING \n\n";
+    // std::vector<std::string> vs = {"111", "244", "1", "99412", "aavsa", "a", "vdasr", "hello", "1sa11rf4f5", "end" };
+    // std::vector<std::string> ts = {"244", "1", "99412", "aavsa", "a", "vdasr", "NO", "ALSO NO"};
+    // size_t tableSize = 9;
+    //
+    // OpenHashMap<std::string, std::string> shmap(tableSize, "LINEAR");
+    // shmap.displayHash();
+    // for(auto const& value: vs){
+    //     // std::cout << value << " ";
+    //     shmap.insert(value, value);
+    // }
+    // shmap.displayHash();
+    // std::string svalue;
+    // for(auto const& key: ts){
+    //     // std::cout << value << " ";
+    //     if(shmap.search(key, svalue)){
+    //       std::cout<<" found " << key <<" "<< svalue<<std::endl;
+    //     }
+    //     else{
+    //         std::cout<<key<<" not found "<<std::endl;
+    // }
+    //
+    // }
+    // for(auto const& value: ts){
+    //     // std::cout << value << " ";
+    //     shmap.remove(value);
+    // }
+    // shmap.displayHash();
+    //
+    // for(auto const& value: vs){
+    //     // std::cout << value << " ";
+    //     shmap.remove(value);
+    // }
+    // shmap.displayHash();
+    //
+    // for(auto const& value: vs){
+    //     // std::cout << value << " ";
+    //     shmap.insert(value, value);
+    // }
+    // shmap.displayHash();
 
     return 0;
 }
