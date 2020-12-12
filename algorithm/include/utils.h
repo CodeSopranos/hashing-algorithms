@@ -16,6 +16,9 @@ std::vector<std::string> genRandStrings(size_t);
 void unitTestOpenHashMap();
 void unitTestChainedHashMap();
 
+// stress tests
+void stressTestOpenHashMap();
+
 // performance evaluation
 void getPerformanceInteger();
 void getPerformanceIntegerLoop();

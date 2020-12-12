@@ -51,8 +51,7 @@ public:
     if (entry == NULL) {
       // std::cout << "entry == NULL"<< std::endl;
       // std::cout << "entry set " << value << std::endl;
-      entry = new OpenHashNode<K, V>(key, value);
-      table[hashValue] = entry;
+      table[hashValue] = new OpenHashNode<K, V>(key, value);
       return true;
     } else if (entry->getState() == DELETED) {
       // std::cout << "entry == DELETED"<< std::endl;
@@ -81,10 +80,8 @@ public:
           return true;
         }
       }
-      attempt++;
-      pairKA.attempt = attempt;
-      hashValue =
-          hashFunc[pairKA]; //(hashFunc[key, attempt] + attempt) % tableSize;
+      pairKA.attempt = ++attempt;
+      hashValue = hashFunc[pairKA];
       entry = table[hashValue];
       if (attempt > tableSize) {
         // std::cout << "Opened Hash Table is full!";

@@ -28,14 +28,19 @@ int main() {
   unitTestChainedHashMap();
   unitTestOpenHashMap();
 
+  //stress tests
+  stressTestOpenHashMap();
+
   // performance evaluation
   std::cout << "\n\n****Integer Numbers Hashing******";
-  getPerformanceInteger();
+  // getPerformanceInteger();
   // getPerformanceIntegerLoop();
   // getPerformanceIntegerToFile();
 
   std::cout << "\n\n****Strings  Hashing******";
   getPerformanceString();
+
+
 
   // size_t N = 100;
   // // std::vector<std::string> sample;
@@ -88,11 +93,11 @@ int main() {
 
   // std::cout << "\n\nUnit test OPEN hash STRING \n\n";
   // std::vector<std::string> vs = {"111", "244", "1", "99412", "aavsa", "a",
-  // "vdasr", "hello", "1sa11rf4f5", "end" }; std::vector<std::string> ts =
+  // "vdasr", "seven", "eight", "end" }; std::vector<std::string> ts =
   // {"244", "1", "99412", "aavsa", "a", "vdasr", "NO", "ALSO NO"}; size_t
   // tableSize = 9;
   //
-  // OpenHashMap<std::string, std::string> shmap(tableSize, "LINEAR");
+  // OpenHashMap<std::string, std::string> shmap(tableSize, "DOUBLE");
   // shmap.displayHash();
   // for(auto const& value: vs){
   //     // std::cout << value << " ";
