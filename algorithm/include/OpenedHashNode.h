@@ -1,9 +1,7 @@
 #pragma once
 
 // Open Hash node class template
-template <typename K, typename V>
-class OpenHashNode
-{
+template <typename K, typename V> class OpenHashNode {
 private:
     K _key;
     V _value;
@@ -12,39 +10,17 @@ private:
     OpenHashNode& operator=(const OpenHashNode&);
 
 public:
-    OpenHashNode(const K& key, const V& value) :
-        _key(key),
-        _value(value)
-    {}
+  OpenHashNode(const K &key, const V &value) : _key(key), _value(value) {}
 
-    K getKey() const
-    {
-        return _key;
-    }
+  K getKey() const { return _key; }
 
-    V getValue() const
-    {
-        return _value;
-    }
+  V getValue() const { return _value; }
 
-    void setValue(V value)
-    {
-        _value = value;
-    }
+  void setValue(V value) { _value = value; }
 
-    void setKey(K key)
-    {
-        _key = key;
-    }
+  void setKey(K key) { _key = key; }
 
-    void setState(bool state)
-    {
-        isDeleted = state;
-    }
+  void setState(bool state) { isDeleted = state; }
 
-    bool getState() const
-    {
-        return isDeleted;
-    }
-
+  bool getState() const { return isDeleted; }
 };
