@@ -7,13 +7,14 @@
 // Hash map class template
 template <typename K, typename V> class HashMap {
 private:
-  HashMap(const HashMap &other);
-  const HashMap &operator=(const HashMap &other);
+  // HashMap(const HashMap &other);
+  // const HashMap &operator=(const HashMap &other);
   // std::vector<HashNode<K, V>*> *table;
   KeyHash<K> hashFunc;
   HashNode<K, V> **table; //  int *ptr;
   VComparator<K> comp;
   size_t tableSize;
+  unsigned int collisions = 0, numOfInserts = 0, numOfRemoves = 0, numOfSearches = 0;
 
 public:
   HashMap(const size_t tableSize) : hashFunc(tableSize), comp() {
@@ -21,15 +22,19 @@ public:
     table = new HashNode<K, V> *[tableSize]();
   }
   bool insert(const K &key, const V &value) {
+    numOfInserts++;
+    unsigned int attempt = 0;
     unsigned int hashValue = hashFunc[key];
     HashNode<K, V> *prev = NULL;
     HashNode<K, V> *entry = table[hashValue];
     // std::cout << "before while" << &entry <<std::endl;
     while (entry != NULL && !comp.compare(entry->getKey(), key)) {
       // std::cout << "entry != NULL" << std::endl;
+      ++attempt;
       prev = entry;
       entry = entry->getNext();
     }
+    collisions += attempt;
 
     if (entry == NULL) {
       // std::cout << "entry == NULL" << std::endl;
@@ -53,35 +58,38 @@ public:
     return false;
   }
   bool search(const K &key, V &value) {
+    numOfSearches++;
     unsigned int hashValue = hashFunc[key];
     HashNode<K, V> *entry = table[hashValue];
-    unsigned int ccounter = 0;
+    unsigned int attempt = 0;
     while (entry != NULL) {
-      ccounter++;
-      // std::cout << "hashkey: "<< hashValue << " value: " << entry->getValue()
-      // <<std::endl;
+      ++attempt;
       if (comp.compare(entry->getKey(), key)) {
+        collisions += attempt;
         value = entry->getValue();
-        // std::cout << "Number of tries: "<< ccounter <<std::endl;
         return true;
       }
-
       entry = entry->getNext();
     }
+    collisions += attempt;
     // std::cout << "Number of tries: "<< ccounter <<std::endl;
     // std::cout << "UKNOWN KEY!"<< std::endl;
     return false;
   }
 
   void remove(const K &key) {
+    numOfRemoves++;
+    unsigned int attempt = 0;
     unsigned int hashValue = hashFunc[key];
     HashNode<K, V> *prev = NULL;
     HashNode<K, V> *entry = table[hashValue];
 
     while (entry != NULL && !comp.compare(entry->getKey(), key)) {
+      ++attempt;
       prev = entry;
       entry = entry->getNext();
     }
+    collisions += attempt;
 
     if (entry == NULL) {
       // key not found
@@ -95,11 +103,30 @@ public:
       } else {
         prev->setNext(entry->getNext());
       }
-
       delete entry;
     }
   }
-  //   void displayHash() {
+
+  void resetCollisions(){ collisions = 0; }
+  void resetCounters() {
+      numOfRemoves = 0;
+      numOfSearches = 0;
+      numOfInserts = 0;
+  }
+  unsigned int getNumberOfCollisions(){
+      return collisions;
+  }
+  unsigned int getNumberOfRemoves() {
+      return numOfRemoves;
+  }
+  unsigned int getNumberOfSearches() {
+      return numOfSearches;
+  }
+  unsigned int getNumberOfInserts() {
+      return numOfInserts;
+  }
+
+    //   void displayHash() {
   //   HashNode<K,V>* entry = NULL;
   //   for (int i = 0; i < tableSize; i++) {
   //     entry = table[i];
