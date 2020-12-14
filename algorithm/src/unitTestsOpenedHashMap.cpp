@@ -11,7 +11,7 @@
 std::map<bool, std::string> oresult = {{false, "FAILED"}, {true, "PASSED"}};
 
 void unitTestOpenHashMap() {
-  std::cout << "\n\n*****Unit tets: Opened Hash map __LINEAR__*******"
+  std::cout << "\n***Unit tets: Opened Hash map __LINEAR__****"
             << std::endl;
   // test 1
   std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -55,7 +55,7 @@ void unitTestOpenHashMap() {
   result = result1 && !(openedHmap4.search(5, value));
   std::cout << "\nTest 4 is " << oresult[result];
 
-  std::cout << "\n\n*****Unit tets: Opened Hash map __QUADRATIC__*******"
+  std::cout << "\n\n***Unit tets: Opened Hash map __QUADRATIC__***"
             << std::endl;
   // test 1
   OpenHashMap<int, int> openedHmap5(tableSize, "QUADRATIC");
@@ -101,7 +101,7 @@ void unitTestOpenHashMap() {
   // << " searchYES " << result1 << " searchNO " << openedHmap8.search(5,
   // value);
 
-  std::cout << "\n\n*****Unit tets: Opened Hash map __DOUBLE__*******"
+  std::cout << "\n\n***Unit tets: Opened Hash map __DOUBLE__***"
             << std::endl;
   // test 1
   OpenHashMap<int, int> openedHmap9(tableSize, "DOUBLE");
@@ -147,7 +147,7 @@ void unitTestOpenHashMap() {
   //<< " searchYES " << result1 << " searchNO " << openedHmap12.search(5,
   // value);
 
-  std::cout << "\n\n*****Unit tets: Opened Hash map __LINEAR__ (string)*******"
+  std::cout << "\n\n***Unit tets: Opened Hash map __LINEAR__ (string)***"
             << std::endl;
   // test 1
   std::vector<std::string> vs = {"100", "2111", "333", "asf4", "555", "654", "777", "888", "987", "10000"};
@@ -186,7 +186,7 @@ void unitTestOpenHashMap() {
   resultStr = result1 && !(openedHmapStr3.search("777", svalue));
   std::cout << "\nTest 4 is " << oresult[resultStr];
 
-  std::cout << "\n\n*****Unit tets: Opened Hash map __QUADRATIC__ (string)*****"
+  std::cout << "\n\n***Unit tets: Opened Hash map __QUADRATIC__ (string)***"
             << std::endl;
   // test 1
   OpenHashMap<std::string, std::string> openedHmapStr4(tableSize, "QUADRATIC");
@@ -224,7 +224,7 @@ void unitTestOpenHashMap() {
   resultStr = result1 && !(openedHmapStr7.search("777", svalue));
   std::cout << "\nTest 4 is " << oresult[resultStr];
 
-  std::cout << "\n\n*****Unit tets: Opened Hash map __DOUBLE__ (string)*****"
+  std::cout << "\n\n***Unit tets: Opened Hash map __DOUBLE__ (string)***"
             << std::endl;
   // test 1
   OpenHashMap<std::string, std::string> openedHmapStr8(tableSize, "DOUBLE");

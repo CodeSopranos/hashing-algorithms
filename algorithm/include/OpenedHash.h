@@ -16,7 +16,6 @@ template <typename K> class OpenKeyHash {
 private:
   size_t tableSize;
   KeyHash<K> uniHashFunc;
-  KeyHash<K> uniHashFuncAUX;
   unsigned int prime = 101027;
   unsigned int c1 = 1;
   unsigned int c2 = 3;
@@ -26,7 +25,6 @@ public:
   OpenKeyHash(size_t tableSize, std::string hashType)
       : tableSize(tableSize),
         uniHashFunc(tableSize),
-        uniHashFuncAUX(tableSize),
         hashType(hashType){};
 
   unsigned int operator[](KeyAttempt<K> const &pairKA) const {
@@ -40,12 +38,11 @@ public:
       return  (l >= tableSize) ? l % tableSize : l;
     } else if (hashType == "DOUBLE") {
       unsigned int auxHash1 = uniHashFunc[pairKA.key];
-      unsigned int auxHash2 = (PRIME[pairKA.key % 420]);//1 + (pairKA.key % 8);
+      unsigned int auxHash2 = (PRIME[pairKA.key % PRIME.size()]);
       unsigned int l = auxHash1 + (pairKA.attempt * auxHash2);
       return (l >= tableSize) ? l % tableSize : l;
     } else {
-      unsigned int l = uniHashFunc[pairKA.key] + pairKA.attempt;
-      return (l >= tableSize) ? l % tableSize : l;
+      throw;
     }
   }
 };
@@ -54,15 +51,14 @@ template <> class OpenKeyHash<std::string> {
 private:
   size_t tableSize;
   KeyHash<std::string> uniHashFunc;
-  KeyHash<std::string> uniHashFuncAUX;
-  unsigned int prime = 97;
   unsigned int c1 = 1;
   unsigned int c2 = 3;
   std::string hashType;
 
 public:
   OpenKeyHash(size_t tableSize, std::string hashType)
-      : tableSize(tableSize), uniHashFunc(tableSize), uniHashFuncAUX(tableSize),
+      : tableSize(tableSize),
+        uniHashFunc(tableSize),
         hashType(hashType){};
 
   unsigned int operator[](KeyAttempt<std::string> const &pairKA) const {
@@ -80,8 +76,7 @@ public:
       unsigned int l = auxHash1 + pairKA.attempt * auxHash2;
       return (l >= tableSize) ? l % tableSize : l;
     } else {
-      unsigned int l = uniHashFunc[pairKA.key] + pairKA.attempt;
-      return (l >= tableSize) ? l % tableSize : l;
+      throw;
     }
   }
 };
