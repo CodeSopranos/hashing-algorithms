@@ -1,10 +1,14 @@
 #pragma once
 
+#define ITERATIONS 400
+#define COEFFICIENT 2
+#define OPERATIONS 30
+
 // files utils
 void write_csv(
     std::string filename,
     std::vector<std::pair<std::string, std::vector<std::string>>> dataset);
-std::vector<std::pair<std::string, std::vector<int>>>
+std::vector<std::pair<std::string, std::vector<std::string>>>
 read_csv(std::string filename);
 
 // random generators
@@ -16,10 +20,17 @@ std::vector<std::string> genRandStrings(size_t);
 void unitTestOpenHashMap();
 void unitTestChainedHashMap();
 
-// performance evaluation
+// stress tests
+void stressTestChainedHashMap();
+void stressTestOpenHashMap();
+
+// performance evaluation int
 void getPerformanceInteger();
-void getPerformanceIntegerLoop();
 void getPerformanceIntegerToFile();
 
+// performance evaluation string
 void getPerformanceString();
-// void testVectorLinkedHashMap();
+void getPerformanceStringToFile();
+
+//real life data tests
+void realLifeDataTets();

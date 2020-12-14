@@ -2,7 +2,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <utility> 
+#include <utility>
 #include <vector>
 
 void write_csv(
@@ -34,13 +34,13 @@ void write_csv(
   myFile.close();
 }
 
-std::vector<std::pair<std::string, std::vector<int>>>
+std::vector<std::pair<std::string, std::vector<std::string>>>
 read_csv(std::string filename) {
   // Reads a CSV file into a vector of <string, vector<int>> pairs where
   // each pair represents <column name, column values>
 
   // Create a vector of <string, int vector> pairs to store the result
-  std::vector<std::pair<std::string, std::vector<int>>> result;
+  std::vector<std::pair<std::string, std::vector<std::string>>> result;
 
   // Create an input filestream
   std::ifstream myFile(filename);
@@ -51,7 +51,7 @@ read_csv(std::string filename) {
 
   // Helper vars
   std::string line, colname;
-  int val;
+  std::string val;
 
   // Read the column names
   if (myFile.good()) {
@@ -65,7 +65,7 @@ read_csv(std::string filename) {
     while (std::getline(ss, colname, ',')) {
 
       // Initialize and add <colname, int vector> pairs to result
-      result.push_back({colname, std::vector<int>{}});
+      result.push_back({colname, std::vector<std::string>{}});
     }
   }
 

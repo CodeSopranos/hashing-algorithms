@@ -9,12 +9,13 @@
 
 template <typename K, typename V> class OpenHashMap {
 private:
-  OpenHashMap(const OpenHashMap &other);
-  const OpenHashMap &operator=(const OpenHashMap &other);
+  // OpenHashMap(const OpenHashMap &other);
+  // const OpenHashMap &operator=(const OpenHashMap &other);
   size_t tableSize;
   OpenHashNode<K, V> **table;
   VComparator<K> comp;
   OpenKeyHash<K> hashFunc;
+  unsigned int collisions = 0;
 
 public:
   OpenHashMap(size_t tableSize, std::string hashType)
@@ -38,21 +39,21 @@ public:
     OpenHashNode<K, V> *entry = table[hashValue];
     // std::cout <<"\nkey: " << key << " hash: " << hashValue << std::endl;
     while (entry != NULL && entry->getState() != DELETED) {
-      attempt++;
       // std::cout << attempt << " ";
-      pairKA.attempt = attempt;
+      pairKA.attempt = ++attempt;
       hashValue = hashFunc[pairKA];
       entry = table[hashValue];
       if (attempt > tableSize) {
         // std::cout << "Opened Hash Table is full! " << value << std::endl;
+        collisions += attempt;
         return false;
       }
     }
     if (entry == NULL) {
       // std::cout << "entry == NULL"<< std::endl;
       // std::cout << "entry set " << value << std::endl;
-      entry = new OpenHashNode<K, V>(key, value);
-      table[hashValue] = entry;
+      table[hashValue] = new OpenHashNode<K, V>(key, value);
+      collisions += attempt;
       return true;
     } else if (entry->getState() == DELETED) {
       // std::cout << "entry == DELETED"<< std::endl;
@@ -62,6 +63,7 @@ public:
       return true;
     } else {
       // std::cout << "entry set new value " << value << std::endl;
+      collisions += attempt;
       entry->setValue(value);
       return true;
     }
@@ -78,18 +80,18 @@ public:
       if (entry->getState() != DELETED) {
         if (comp.compare(entry->getKey(), key)) {
           value = entry->getValue();
+          collisions += attempt;
           return true;
         }
       }
-      attempt++;
-      pairKA.attempt = attempt;
-      hashValue =
-          hashFunc[pairKA]; //(hashFunc[key, attempt] + attempt) % tableSize;
+      pairKA.attempt = ++attempt;
+      hashValue = hashFunc[pairKA];
       entry = table[hashValue];
       if (attempt > tableSize) {
         // std::cout << "Opened Hash Table is full!";
         // std::cout << "Number of tries: "<< attempt <<std::endl;
         // std::cout << "UKNOWN KEY!"<< std::endl;
+        collisions += attempt;
         return false;
       }
     }
@@ -103,14 +105,14 @@ public:
     OpenHashNode<K, V> *entry = table[hashValue];
 
     while (entry != NULL && !comp.compare(entry->getKey(), key)) {
-      attempt++;
-      pairKA.attempt = attempt;
+      pairKA.attempt = ++attempt;
       hashValue = hashFunc[pairKA]; //(hashFunc[key] + attempt) % tableSize;
       entry = table[hashValue];
-      if (attempt > tableSize - 1) {
+      if (attempt >= tableSize) {
         // std::cout << "Opened Hash Table is full!";
         // std::cout << "Number of tries: "<< attempt <<std::endl;
         // std::cout << "UKNOWN KEY!"<< std::endl;
+        collisions += attempt;
         return;
       }
     }
@@ -118,13 +120,19 @@ public:
     if (entry == NULL) {
       // std::cout << "Number of tries: "<< attempt <<std::endl;
       // std::cout << "UKNOWN KEY!"<< std::endl;
+      collisions += attempt;
       return;
 
     } else {
+      collisions += attempt;
       entry->setState(DELETED);
       entry->setState(DELETED);
     }
   }
+
+  void resetCollisions(){ collisions = 0; }
+
+  unsigned int getNcollisions(){ return collisions; }
 
   void displayHash() {
     std::cout << std::endl;
