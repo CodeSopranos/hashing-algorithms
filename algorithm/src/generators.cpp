@@ -15,7 +15,7 @@ int genRandomUid(unsigned int a, unsigned int b) {
       rd()); // инициализируем Вихрь Мерсенна случайным стартовым числом
   std::uniform_int_distribution<int> uid(a, b);
   return uid(mersenne);
-}
+};
 
 std::vector<int> genRandVec(size_t N, unsigned int a, unsigned int b) {
 
@@ -26,7 +26,7 @@ std::vector<int> genRandVec(size_t N, unsigned int a, unsigned int b) {
   }
 
   return randVec;
-}
+};
 
 std::string genRandString(size_t stringLen) {
   std::string resultStr;
@@ -37,7 +37,7 @@ std::string genRandString(size_t stringLen) {
     resultStr += ('a' + dist(mt));
   }
   return resultStr;
-}
+};
 
 std::vector<std::string> genRandStrings(size_t N) {
   std::vector<std::string> randVec(N);
@@ -47,4 +47,4 @@ std::vector<std::string> genRandStrings(size_t N) {
   for (auto i = 0; i < randVec.size(); ++i)
     randVec[i] = genRandString(dist(mt));
   return randVec;
-}
+};

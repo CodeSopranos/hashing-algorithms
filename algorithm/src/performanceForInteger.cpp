@@ -10,11 +10,13 @@
 #include <hash_map>
 #include <map>
 
+#include "utils.h"
+#include "auxPerformance.h"
+
 // our implementation
 #include "ChainedHashMap.h"
 #include "OpenedHashMap.h"
-#include "utils.h"
-#include "auxPerformance.h"
+#include "CuckooHashMap.h"
 
 
 using namespace std;
@@ -110,31 +112,8 @@ void getPerformanceInteger() {
     // cout << "[" << value << "]" << endl;
     hmap.insert(value, value);
   }
-  // test inserts
-  start = high_resolution_clock::now();
-  for (auto const &value : testVec) {
-    hmap.insert(value, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average insert time: " << duration / testSize << " microsec" << endl;
-  // test search
-  int value;
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    hmap.search(key, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average search time: " << duration / testSize << " microsec" << endl;
-  // test delete
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    hmap.remove(key);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average delete time: " << duration / testSize << " microsec" << endl;
+  auxPerformanceOperations(hmap, testVec);
+
 
   /*      Opened Hash Map part          */
   cout << "\n*****Opened Hash map __LINEAR__*******" << endl;
@@ -142,92 +121,33 @@ void getPerformanceInteger() {
   for (auto const &value : baseVec) {
     openHmapL.insert(value, value);
   }
-  // test inserts
-  start = high_resolution_clock::now();
-  for (auto const &value : testVec) {
-    openHmapL.insert(value, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average insert time: " << duration / testSize << " microsec" << endl;
-  // test search
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    openHmapL.search(key, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average search time: " << duration / testSize << " microsec" << endl;
-  // test delete
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    openHmapL.remove(key);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average delete time: " << duration / testSize << " microsec" << endl;
+  auxPerformanceOperations(openHmapL, testVec);
 
   cout << "\n*****Opened Hash map __QUADRATIC__*******" << endl;
-  OpenHashMap<int, int> openHmapLQdr(tableSize, "QUADRATIC");
+  OpenHashMap<int, int> openHmapQdr(tableSize, "QUADRATIC");
   for (auto const &value : baseVec) {
-    openHmapLQdr.insert(value, value);
+    openHmapQdr.insert(value, value);
   }
-  // test inserts
-  start = high_resolution_clock::now();
-  for (auto const &value : testVec) {
-    openHmapLQdr.insert(value, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average insert time: " << duration / testSize << " microsec" << endl;
-  // test search
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    openHmapLQdr.search(key, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average search time: " << duration / testSize << " microsec" << endl;
-  // test delete
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    openHmapLQdr.remove(key);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average delete time: " << duration / testSize << " microsec" << endl;
+  auxPerformanceOperations(openHmapQdr, testVec);
 
   cout << "\n*****Opened Hash map __DOUBLE__*******" << endl;
-  OpenHashMap<int, int> openHmapLDbl(tableSize, "DOUBLE");
+  OpenHashMap<int, int> openHmapDbl(tableSize, "DOUBLE");
   for (auto const &value : baseVec) {
-    openHmapLDbl.insert(value, value);
+    openHmapDbl.insert(value, value);
   }
-  // test inserts
-  start = high_resolution_clock::now();
-  for (auto const &value : testVec) {
-    openHmapLDbl.insert(value, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average insert time: " << duration / testSize << " microsec" << endl;
-  // test search
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    openHmapLDbl.search(key, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average search time: " << duration / testSize << " microsec" << endl;
-  // test delete
-  start = high_resolution_clock::now();
-  for (auto const &key : testVec) {
-    openHmapLDbl.remove(key);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average delete time: " << duration / testSize << " microsec" << endl;
+  auxPerformanceOperations(openHmapDbl, testVec);
 
   /*      CoCoo Hash Map part          */
+  cout << "\n*****Cuckoo Hash map*******" << endl;
+  int counter = 0;
+  CuckooHashMap<int, int> cuckooHmap(4*tableSize, tableSize);
+  for (auto const &value : baseVec) {
+    if (counter++ % 100 == 0)
+      std::cout << "#";
+    cuckooHmap.insert(value, value);
+  }
+  cout << endl;
+  auxPerformanceOperations(cuckooHmap, testVec);
 };
 
 
@@ -237,27 +157,29 @@ void getPerformanceIntegerToFile()
   size_t tableSize;
   size_t testSize, vecSize;
   vector<int> baseVec, testVec;
-  string filepath = "../data/output/integerPerformanceM2N_1.csv";
+  string filepath = INT_FILE;
   vector<string> HashTableSize, DataSize;
 
   vector<string> insertMap, insertHashMap;
   vector<string> searchMap, searchHashMap;
   vector<string> deleteMap, deleteHashMap;
 
-  vector<string> attemptsChained, attemptsOpened_linear, attemptsOpened_quadratic, attemptsOpened_double, attemptsCocoo;
+  vector<string> attemptsChained, attemptsOpened_linear, attemptsOpened_quadratic, attemptsOpened_double, attemptsCuckoo;
 
-  vector<string> insertChained, insertOpened_linear, insertOpened_quadratic, insertOpened_double, insertCocoo;
-  vector<string> searchChained, searchOpened_linear, searchOpened_quadratic, searchOpened_double, searchCocoo;
-  vector<string> deleteChained, deleteOpened_linear, deleteOpened_quadratic, deleteOpened_double, deleteCocoo;
+  vector<string> insertChained, insertOpened_linear, insertOpened_quadratic, insertOpened_double, insertCuckoo;
+  vector<string> searchChained, searchOpened_linear, searchOpened_quadratic, searchOpened_double, searchCuckoo;
+  vector<string> deleteChained, deleteOpened_linear, deleteOpened_quadratic, deleteOpened_double, deleteCuckoo;
 
   typedef HashMap <int, int> intChainedHashMap;
   typedef OpenHashMap <int, int> intOpenedHashMap;
+  typedef CuckooHashMap <int, int>  intCuckooHashMap;
+
   cout << "\n\nProgress: ";
   for (auto i=1; i<=ITERATIONS; ++i){
     if (i % 10 == 0){
       cout<<"#";
     }
-    tableSize = 100 * i;
+    tableSize = STEP * i;
     vecSize = tableSize / COEFFICIENT;
     testSize = OPERATIONS;
     baseVec = genRandVec(vecSize, 0, 100000);
@@ -353,6 +275,12 @@ void getPerformanceIntegerToFile()
         openedHmapD.insert(value, value);
     }
     auxPerformanceFunc<intOpenedHashMap, int>(openedHmapD, testVec, insertOpened_double, searchOpened_double, deleteOpened_double, attemptsOpened_double);
+
+    intCuckooHashMap cuckooHmap(4*tableSize, tableSize);
+    for(auto const& value: baseVec){
+        cuckooHmap.insert(value, value);
+    }
+    auxPerformanceFunc<intCuckooHashMap, int>(cuckooHmap, testVec, insertCuckoo, searchCuckoo, deleteCuckoo, attemptsCuckoo);
   }
     vector<pair<string, vector<string>>> vals = {   {"TableSize", HashTableSize},
                                                     {"DataSize", DataSize},
@@ -406,6 +334,15 @@ void getPerformanceIntegerToFile()
                                                     deleteOpened_double},
                                                     {"attemptsOpened_double",
                                                     attemptsOpened_double},
+
+                                                    {"insertCuckoo",
+                                                    insertCuckoo},
+                                                    {"searchCuckoo",
+                                                    searchCuckoo},
+                                                    {"deleteCuckoo",
+                                                    deleteCuckoo},
+                                                    {"attemptsCuckoo",
+                                                    attemptsCuckoo},
                                       };
 
     write_csv(filepath, vals);

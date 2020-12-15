@@ -1,8 +1,13 @@
 #pragma once
 
-#define ITERATIONS 400
-#define COEFFICIENT 2
+#define ITERATIONS 100
+#define COEFFICIENT 4
 #define OPERATIONS 30
+#define STEP 1000
+#define STRESS_SIZE 700
+#define INT_FILE "../data/output/integerPerformanceM4N_1.csv"
+#define STRING_FILE "../data/output/stringPerformanceM4N_1.csv"
+
 
 // files utils
 void write_csv(
@@ -12,6 +17,7 @@ std::vector<std::pair<std::string, std::vector<std::string>>>
 read_csv(std::string filename);
 
 // random generators
+int genRandomUid(unsigned int a, unsigned int b);
 std::vector<int> genRandVec(size_t N, unsigned int a, unsigned int b);
 std::string genRandString(size_t);
 std::vector<std::string> genRandStrings(size_t);
@@ -19,10 +25,12 @@ std::vector<std::string> genRandStrings(size_t);
 // unit tests
 void unitTestOpenHashMap();
 void unitTestChainedHashMap();
+void unitTestCuckooHashMap();
 
 // stress tests
 void stressTestChainedHashMap();
 void stressTestOpenHashMap();
+void stressTestCuckooHashMap();
 
 // performance evaluation int
 void getPerformanceInteger();

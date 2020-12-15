@@ -22,5 +22,5 @@ public:
 
   void setState(bool state) { isDeleted = state; }
 
-  bool getState() const { return isDeleted; }
+  bool getState() { return isDeleted; }
 };
