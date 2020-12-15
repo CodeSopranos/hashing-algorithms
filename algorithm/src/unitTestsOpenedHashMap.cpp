@@ -5,14 +5,16 @@
 #include <string>
 #include <vector>
 
-#include "OpenedHashMap.h"
 #include "utils.h"
+#include "auxStress.h"
+#include "OpenedHashMap.h"
+
 
 std::map<bool, std::string> oresult = {{false, "FAILED"}, {true, "PASSED"}};
 
+
 void unitTestOpenHashMap() {
-  std::cout << "\n***Unit tets: Opened Hash map __LINEAR__****"
-            << std::endl;
+  std::cout << "\n***Unit tets: Opened Hash map __LINEAR__****";
   // test 1
   std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
   const size_t tableSize = 9;
@@ -264,171 +266,16 @@ void unitTestOpenHashMap() {
 };
 
 
-
 void stressTestOpenHashMap() {
-
-  std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-  const size_t tableSize = 9;
-  size_t stressSize = 5000;
-  int value;
-  bool result, result1, result2;
-
+  size_t stressSize = STRESS_SIZE;
   std::cout << "\n\n**Stress tets: Opened Hash map __LINEAR__**"<< std::endl;
-  for (auto i=0; i < stressSize; ++i){
-    // test 1
-    OpenHashMap<int, int> openedHmap(tableSize, "LINEAR");
-    for (auto const &value : v) {
-      openedHmap.insert(value, value);
-    }
-    result = openedHmap.insert(11, 11);
-    if (result){
-      std::cout<<"TEST 1 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
+  typedef OpenHashMap<int, int> intOpenHashMap;
+  stressTesterOpened<intOpenHashMap>(stressSize, "LINEAR");
 
-    // test 2
-    OpenHashMap<int, int> openedHmap2(tableSize, "LINEAR");
-    for (auto const &value : v) {
-      openedHmap2.insert(value, value);
-    }
-    result = openedHmap2.search(3, value);
-    result = result && (value == 3);
-    if (!result){
-      std::cout<<"TEST 2 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
+  std::cout << "\n\n**Stress tets: Opened Hash map __QUADRATIC__**"<< std::endl;
+  stressTesterOpened<intOpenHashMap>(stressSize, "QUADRATIC");
 
-    // test 3
-    OpenHashMap<int, int> openedHmap3(tableSize, "LINEAR");
-    for (auto const &value : v) {
-      openedHmap3.insert(value, value);
-    }
-    result = openedHmap3.search(7, value);
-    result = result && (value == 7);
-    if (!result){
-      std::cout<<"TEST 3 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
+  std::cout << "\n\n**Stress tets: Opened Hash map __DOUBLE__**"<< std::endl;
+  stressTesterOpened<intOpenHashMap>(stressSize, "DOUBLE");
 
-    // test 4
-    OpenHashMap<int, int> openedHmap4(tableSize, "LINEAR");
-    for (auto const &value : v) {
-      openedHmap4.insert(value, value);
-    }
-    bool result1 = openedHmap4.search(5, value);
-    openedHmap4.remove(5);
-    result = result1 && !(openedHmap4.search(5, value));
-    if (!result){
-      std::cout<<"TEST 4 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
-
-  }
-
-  std::cout << "\n**Stress tets: Opened Hash map __QUADRATIC__**"<< std::endl;
-  for (auto i=0; i < stressSize; ++i){
-  // test 1
-    OpenHashMap<int, int> openedHmap5(tableSize, "QUADRATIC");
-    for (auto const &value : v) {
-      openedHmap5.insert(value, value);
-    }
-    result = openedHmap5.insert(11, 11);
-    if (result){
-      std::cout<<"TEST 1 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
-
-    // test 2
-    OpenHashMap<int, int> openedHmap6(tableSize, "QUADRATIC");
-    for (auto const &value : v) {
-      openedHmap6.insert(value, value);
-    }
-    result = openedHmap6.search(3, value);
-    result = result && (value == 3);
-    if (!result){
-      std::cout<<"TEST 2 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
-
-    // test 3
-    int newval=0;
-    OpenHashMap<int, int> openedHmap7(tableSize, "QUADRATIC");
-    for (auto const &value : v) {
-      openedHmap7.insert(value, value);
-    }
-    result = openedHmap7.search(7, newval);
-    result = result && (newval == 7);
-    if (!result){
-      std::cout<<"TEST 3 is FAILED (itr: "<<i << " ) "<<openedHmap7.search(7, newval)<<(newval == 7)<<std::endl;
-      break;
-    }
-
-    // test 4
-    OpenHashMap<int, int> openedHmap8(tableSize, "QUADRATIC");
-    for (auto const &value : v) {
-      openedHmap8.insert(value, value);
-    }
-    bool result1 = openedHmap8.search(5, value);
-    openedHmap8.remove(5);
-    result = result1 && !(openedHmap8.search(5, value));
-    if (!result){
-      std::cout<<"TEST 4 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
-
-  }
-
-
-  std::cout << "\n**Stress tets: Opened Hash map __DOUBLE__**"<< std::endl;
-  for (auto i=0; i < stressSize; ++i){
-  // test 1
-    OpenHashMap<int, int> openedHmap9(tableSize, "DOUBLE");
-    for (auto const &value : v) {
-      openedHmap9.insert(value, value);
-    }
-    result = openedHmap9.insert(11, 11);
-    if (result){
-      std::cout<<"TEST 1 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
-
-    // test 2
-    OpenHashMap<int, int> openedHmap10(tableSize, "DOUBLE");
-    for (auto const &value : v) {
-      openedHmap10.insert(value, value);
-    }
-    result = openedHmap10.search(3, value);
-    result = result && (value == 3);
-    if (!result){
-      std::cout<<"TEST 2 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
-
-    // test 3
-    int newval=0;
-    OpenHashMap<int, int> openedHmap11(tableSize, "DOUBLE");
-    for (auto const &value : v) {
-      openedHmap11.insert(value, value);
-    }
-    result = openedHmap11.search(7, newval);
-    result = result && (newval == 7);
-    if (!result){
-      std::cout<<"TEST 3 is FAILED (itr: "<<i << " ) "<<openedHmap11.search(7, newval)<<(newval == 7)<<std::endl;
-      break;
-    }
-
-    // test 4
-    OpenHashMap<int, int> openedHmap12(tableSize, "DOUBLE");
-    for (auto const &value : v) {
-      openedHmap12.insert(value, value);
-    }
-    bool result1 = openedHmap12.search(5, value);
-    openedHmap12.remove(5);
-    result = result1 && !(openedHmap12.search(5, value));
-    if (!result){
-      std::cout<<"TEST 4 is FAILED (itr: "<<i << " )"<<std::endl;
-      break;
-    }
-
-  }
 };

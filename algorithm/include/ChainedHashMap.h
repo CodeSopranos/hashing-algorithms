@@ -21,14 +21,13 @@ public:
     this->tableSize = tableSize;
     table = new HashNode<K, V> *[tableSize]();
   }
+  
   bool insert(const K &key, const V &value) {
     unsigned int attempt = 0;
     unsigned int hashValue = hashFunc[key];
     HashNode<K, V> *prev = NULL;
     HashNode<K, V> *entry = table[hashValue];
-    // std::cout << "before while" << &entry <<std::endl;
     while (entry != NULL && !comp.compare(entry->getKey(), key)) {
-      // std::cout << "entry != NULL" << std::endl;
       ++attempt;
       prev = entry;
       entry = entry->getNext();
@@ -36,11 +35,9 @@ public:
     collisions += attempt;
 
     if (entry == NULL) {
-      // std::cout << "entry == NULL" << std::endl;
       entry = new HashNode<K, V>(key, value);
 
       if (prev == NULL) {
-        // insert as first bucket
         table[hashValue] = entry;
         return true;
 
@@ -50,7 +47,6 @@ public:
       }
 
     } else {
-      // just update the value
       entry->setValue(value);
       return true;
     }
@@ -70,8 +66,6 @@ public:
       entry = entry->getNext();
     }
     collisions += attempt;
-    // std::cout << "Number of tries: "<< ccounter <<std::endl;
-    // std::cout << "UKNOWN KEY!"<< std::endl;
     return false;
   }
 

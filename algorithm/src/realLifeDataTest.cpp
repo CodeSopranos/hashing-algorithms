@@ -10,11 +10,13 @@
 #include <hash_map>
 #include <map>
 
+#include "utils.h"
+#include "auxPerformance.h"
+
 // our implementation
 #include "ChainedHashMap.h"
 #include "OpenedHashMap.h"
-#include "utils.h"
-#include "auxPerformance.h"
+#include "CuckooHashMap.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -111,32 +113,15 @@ void realLifeDataTets(){
     chainedHmap.insert(value, value);
   }
   chainedHmap.resetCollisions();
-  // test inserts
-  start = high_resolution_clock::now();
-  for (auto const &value : testWords) {
-    chainedHmap.insert(value, value);
+  auxPerformanceOperations(chainedHmap, testWords);
+
+  cout << "\n*****Opened Hash map __LINEAR__*******" << endl;
+  OpenHashMap<string, string> openHmapL(tableSize, "LINEAR");
+  for (auto const &value : dictionary) {
+    openHmapL.insert(value, value);
   }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average insert time: " << duration / testSize << " microsec" << endl;
-  // test search
-  string value;
-  start = high_resolution_clock::now();
-  for (auto const &key : testWords) {
-    chainedHmap.search(key, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average search time: " << duration / testSize << " microsec" << endl;
-  // test delete
-  start = high_resolution_clock::now();
-  for (auto const &key : testWords) {
-    chainedHmap.remove(key);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average delete time: " << duration / testSize << " microsec" << endl;
-  cout << "N attempts per operation: " << chainedHmap.getNcollisions() / (testSize * 3) << endl;
+  openHmapL.resetCollisions();
+  auxPerformanceOperations(openHmapL, testWords);
 
   cout << "\n*****Opened Hash map __QUADRATIC__*******" << endl;
   OpenHashMap<string, string> openHmapQdr(tableSize, "QUADRATIC");
@@ -144,31 +129,8 @@ void realLifeDataTets(){
     openHmapQdr.insert(value, value);
   }
   openHmapQdr.resetCollisions();
-  // test inserts
-  start = high_resolution_clock::now();
-  for (auto const &value : testWords) {
-    openHmapQdr.insert(value, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average insert time: " << duration / testSize << " microsec" << endl;
-  // test search
-  start = high_resolution_clock::now();
-  for (auto const &key : testWords) {
-    openHmapQdr.search(key, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average search time: " << duration / testSize << " microsec" << endl;
-  // test delete
-  start = high_resolution_clock::now();
-  for (auto const &key : testWords) {
-    openHmapQdr.remove(key);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average delete time: " << duration / testSize << " microsec" << endl;
-  cout << "N attempts: " << openHmapQdr.getNcollisions() / (testSize * 3) << endl;
+  auxPerformanceOperations(openHmapQdr, testWords);
+
 
   cout << "\n*****Opened Hash map __DOUBLE__*******" << endl;
   OpenHashMap<string, string> openHmapDbl(tableSize, "DOUBLE");
@@ -176,30 +138,13 @@ void realLifeDataTets(){
     openHmapDbl.insert(value, value);
   }
   openHmapDbl.resetCollisions();
-  // test inserts
-  start = high_resolution_clock::now();
-  for (auto const &value : testWords) {
-    openHmapDbl.insert(value, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average insert time: " << duration / testSize << " microsec" << endl;
-  // test search
-  start = high_resolution_clock::now();
-  for (auto const &key : testWords) {
-    openHmapDbl.search(key, value);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average search time: " << duration / testSize << " microsec" << endl;
-  // test delete
-  start = high_resolution_clock::now();
-  for (auto const &key : testWords) {
-    openHmapDbl.remove(key);
-  }
-  stop = high_resolution_clock::now();
-  duration = duration_cast<microseconds>(stop - start).count();
-  cout << "Average delete time: " << duration / testSize << " microsec" << endl;
-  cout << "N attempts: " << openHmapDbl.getNcollisions() / (testSize * 3) << endl;
+  auxPerformanceOperations(openHmapDbl, testWords);
 
+  cout << "\n*****Cuckoo Hash Map*******" << endl;
+  CuckooHashMap<string, string> cuckooHmap(4*tableSize, tableSize);
+  for (auto const &value : dictionary) {
+    cuckooHmap.insert(value, value);
+  }
+  cuckooHmap.resetCollisions();
+  auxPerformanceOperations(cuckooHmap, testWords);
 };

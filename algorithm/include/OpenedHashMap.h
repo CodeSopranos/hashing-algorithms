@@ -33,65 +33,52 @@ public:
   }
 
   bool insert(const K &key, const V &value) {
-    unsigned int attempt = 0;
-    KeyAttempt<K> pairKA = {key, attempt};
+    KeyAttempt<K> pairKA = {key, 0};
     unsigned int hashValue = hashFunc[pairKA];
-    OpenHashNode<K, V> *entry = table[hashValue];
-    // std::cout <<"\nkey: " << key << " hash: " << hashValue << std::endl;
-    while (entry != NULL && entry->getState() != DELETED) {
-      // std::cout << attempt << " ";
-      pairKA.attempt = ++attempt;
+    while (table[hashValue] != NULL && table[hashValue]->getState() != DELETED) {
+      if ( comp.compare(table[hashValue]->getKey(), key)){
+        table[hashValue]->setValue(value);
+        table[hashValue]->setState(!DELETED);
+        return true;
+      }
+      pairKA.attempt++;
       hashValue = hashFunc[pairKA];
-      entry = table[hashValue];
-      if (attempt > tableSize) {
-        // std::cout << "Opened Hash Table is full! " << value << std::endl;
-        collisions += attempt;
+      if (pairKA.attempt == (tableSize+1)) {
+        collisions += pairKA.attempt;
         return false;
       }
+
     }
-    if (entry == NULL) {
-      // std::cout << "entry == NULL"<< std::endl;
-      // std::cout << "entry set " << value << std::endl;
+    if (table[hashValue] == NULL) {
       table[hashValue] = new OpenHashNode<K, V>(key, value);
-      collisions += attempt;
+      collisions += pairKA.attempt;
       return true;
-    } else if (entry->getState() == DELETED) {
-      // std::cout << "entry == DELETED"<< std::endl;
-      entry->setKey(key);
-      entry->setValue(value);
-      entry->setState(!DELETED);
+    } else if (table[hashValue]->getState() == DELETED) {
+      collisions += pairKA.attempt;
+      table[hashValue] = new OpenHashNode<K, V>(key, value);
       return true;
     } else {
-      // std::cout << "entry set new value " << value << std::endl;
-      collisions += attempt;
-      entry->setValue(value);
+      collisions += pairKA.attempt;
+      table[hashValue]->setValue(value);
       return true;
     }
   }
 
   bool search(const K &key, V &value) {
-    unsigned int attempt = 0;
-    KeyAttempt<K> pairKA = {key, attempt};
+    KeyAttempt<K> pairKA = {key, 0};
     unsigned int hashValue = hashFunc[pairKA];
-    OpenHashNode<K, V> *entry = table[hashValue];
-    while (entry != NULL) {
-      // std::cout << "hashkey: "<< hashValue << " value: " << entry->getValue()
-      // <<std::endl;
-      if (entry->getState() != DELETED) {
-        if (comp.compare(entry->getKey(), key)) {
-          value = entry->getValue();
-          collisions += attempt;
+    while (table[hashValue] != NULL) {
+      if (table[hashValue]->getState() != DELETED) {
+        if (comp.compare(table[hashValue]->getKey(), key)) {
+          value = table[hashValue]->getValue();
+          collisions += pairKA.attempt;
           return true;
         }
       }
-      pairKA.attempt = ++attempt;
+      pairKA.attempt++;
       hashValue = hashFunc[pairKA];
-      entry = table[hashValue];
-      if (attempt > tableSize) {
-        // std::cout << "Opened Hash Table is full!";
-        // std::cout << "Number of tries: "<< attempt <<std::endl;
-        // std::cout << "UKNOWN KEY!"<< std::endl;
-        collisions += attempt;
+      if (pairKA.attempt == tableSize) {
+        collisions += pairKA.attempt;
         return false;
       }
     }
@@ -102,31 +89,24 @@ public:
     unsigned int attempt = 0;
     KeyAttempt<K> pairKA = {key, attempt};
     unsigned int hashValue = hashFunc[pairKA];
-    OpenHashNode<K, V> *entry = table[hashValue];
 
-    while (entry != NULL && !comp.compare(entry->getKey(), key)) {
+    while (table[hashValue] != NULL && !comp.compare(table[hashValue]->getKey(), key)) {
       pairKA.attempt = ++attempt;
-      hashValue = hashFunc[pairKA]; //(hashFunc[key] + attempt) % tableSize;
-      entry = table[hashValue];
-      if (attempt >= tableSize) {
-        // std::cout << "Opened Hash Table is full!";
-        // std::cout << "Number of tries: "<< attempt <<std::endl;
-        // std::cout << "UKNOWN KEY!"<< std::endl;
+      hashValue = hashFunc[pairKA];
+      if (attempt > tableSize) {
         collisions += attempt;
         return;
       }
     }
 
-    if (entry == NULL) {
-      // std::cout << "Number of tries: "<< attempt <<std::endl;
-      // std::cout << "UKNOWN KEY!"<< std::endl;
+    if (table[hashValue] == NULL) {
       collisions += attempt;
       return;
 
     } else {
       collisions += attempt;
-      entry->setState(DELETED);
-      entry->setState(DELETED);
+      table[hashValue]->setState(DELETED);
+      return;
     }
   }
 

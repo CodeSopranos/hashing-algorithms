@@ -6,23 +6,26 @@
 #include <vector>
 
 #include "utils.h"
-// #include "ChainedHashMap.h"
+#include "ChainedHashMap.h"
 #include "OpenedHashMap.h"
+#include "CuckooHashMap.h"
+
 
 int main() {
 
   // unit tests
   unitTestChainedHashMap();
   unitTestOpenHashMap();
+  unitTestCuckooHashMap();
 
   //stress tests
   stressTestChainedHashMap();
   stressTestOpenHashMap();
+  stressTestCuckooHashMap();
 
   // performance evaluation
   std::cout << "\n\n****Integer Numbers Hashing****";
   // getPerformanceInteger();
-  // getPerformanceIntegerLoop();
   getPerformanceIntegerToFile();
 
   std::cout << "\n\n****Strings  Hashing****";
@@ -32,10 +35,6 @@ int main() {
   // real life data
   std::cout << "\n\n***Real life data hashing***\n";
   realLifeDataTets();
-
-  // std::cout<< (6 * 32) << " " << (6 << 5);
-
-
 
   return 0;
 }

@@ -67,7 +67,7 @@ read_csv(std::string filename) {
       // Initialize and add <colname, int vector> pairs to result
       result.push_back({colname, std::vector<std::string>{}});
     }
-  }
+  };
 
   // Read data, line by line
   while (std::getline(myFile, line)) {
@@ -96,4 +96,4 @@ read_csv(std::string filename) {
   myFile.close();
 
   return result;
-}
+};
