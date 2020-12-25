@@ -153,7 +153,7 @@ void stressTesterCuckoo(size_t stressSize, unsigned int coef)
     baseVec = genRandVec(vecSize, 0, 100000);
     testVec = genRandVec(testSize, 0, 100000);
 
-    G hashMap(coef*tableSize, tableSize);
+    G hashMap(coef*tableSize, tableSize, 2);
     bool testInsert = false;
     for (auto const &value : baseVec) {
       testInsert = hashMap.insert(value, value);

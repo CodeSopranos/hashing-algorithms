@@ -24,6 +24,7 @@ private:
     size_t tableSize;
     VComparator<K> comp;
     bool verbose = 0;
+    int k = -1;
     int numberOfInserts = 0, numberOfSearch = 0, numberOfRemove = 0, numberOfRehash = 0;
 public:
     // m - tableSize, n - numberOfElements m >= 2n
@@ -41,7 +42,21 @@ public:
         table_left = new OpenHashNode<K, V>*[tableSize]();
         table_right = new OpenHashNode<K, V>*[tableSize]();
     }
+    CuckooHashMap(const size_t tableSize, const size_t numberOfElements, int k):
+            k(k),
+            hashFunc_1(tableSize, k),
+            hashFunc_2(tableSize, k),
+            tableSize(tableSize),
+            comp()
 
+    {
+        if ((this->tableSize < 2*numberOfElements) && (verbose)) {
+            std::cerr<<"\nWarning: m - tableSize, n - numberOfElements m < 2n!";
+        }
+        max_cuckoo = 6*log2(numberOfElements);
+        table_left = new OpenHashNode<K, V>*[tableSize]();
+        table_right = new OpenHashNode<K, V>*[tableSize]();
+    }
     void swap(OpenHashNode<K, V>* item, OpenHashNode<K, V>* item_) {
         OpenHashNode<K, V> temp_item = *item;
         *item = *item_;
@@ -143,10 +158,20 @@ public:
             std::cerr << "hash1: " << hash1 << " hash2: " << hash2 << std::endl;
         }
     }
+    void reset_hash_func() {
+        if (k == -1) {
+            hashFunc_1 = CuckooKeyHash<K>(tableSize);
+            hashFunc_2 = CuckooKeyHash<K>(tableSize);
+        } else {
+            hashFunc_1 = CuckooKeyHash<K>(tableSize, k);
+            hashFunc_2 = CuckooKeyHash<K>(tableSize, k);
+        }
+    }
     void rehash() {
         numberOfRehash++;
-        hashFunc_1 = CuckooKeyHash<K>(tableSize);
-        hashFunc_2 = CuckooKeyHash<K>(tableSize);
+        //hashFunc_1 = CuckooKeyHash<K>(tableSize);
+        //hashFunc_2 = CuckooKeyHash<K>(tableSize);
+        reset_hash_func();
         auto** table_copy_left = new OpenHashNode<K, V>*[tableSize]();
         auto** table_copy_right = new OpenHashNode<K, V>*[tableSize]();
 

@@ -139,8 +139,8 @@ void getPerformanceInteger() {
 
   /*      CoCoo Hash Map part          */
   cout << "\n*****Cuckoo Hash map*******" << endl;
-  int counter = 0;
-  CuckooHashMap<int, int> cuckooHmap(4*tableSize, tableSize);
+  int counter = 0, k = 3;
+  CuckooHashMap<int, int> cuckooHmap(4*tableSize, tableSize, k);
   for (auto const &value : baseVec) {
     if (counter++ % 100 == 0)
       std::cout << "#";
@@ -276,7 +276,7 @@ void getPerformanceIntegerToFile()
     }
     auxPerformanceFunc<intOpenedHashMap, int>(openedHmapD, testVec, insertOpened_double, searchOpened_double, deleteOpened_double, attemptsOpened_double);
 
-    intCuckooHashMap cuckooHmap(4*tableSize, tableSize);
+    intCuckooHashMap cuckooHmap(4*tableSize, tableSize, 3);
     for(auto const& value: baseVec){
         cuckooHmap.insert(value, value);
     }

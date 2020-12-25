@@ -9,18 +9,24 @@ private:
     size_t tableSize;
     KeyHash<K> uniHashFunc;
     unsigned int a, b;
-
+    int k = -1;
 public:
-    CuckooKeyHash(size_t tableSize)
+    CuckooKeyHash(size_t tableSize, int k = -1)
     : tableSize(tableSize),
-      uniHashFunc(tableSize),
+      uniHashFunc(tableSize, k),
       a(genRandomUid(1, 12)),
-      b(genRandomUid(0,  PRIME.size()-1))
+      b(genRandomUid(0,  PRIME.size()-1)),
+      k(k)
       {};
 
     unsigned int operator[](const K &key) const {
-        unsigned int l = (uniHashFunc[key] << a) + PRIME[b];
-        return (l >= tableSize) ? l % tableSize : l;
+        unsigned int l;
+        if (k == -1) {
+            l = (uniHashFunc[key] << a) + PRIME[b];
+            return (l >= tableSize) ? l % tableSize : l;
+        } else {
+            return uniHashFunc[key];
+        }
     }
 };
 
@@ -32,7 +38,7 @@ private:
     unsigned int a, b;
 
 public:
-    CuckooKeyHash(size_t tableSize)
+    CuckooKeyHash(size_t tableSize, int k = -1)
     : tableSize(tableSize),
       uniHashFunc(tableSize),
       a(genRandomUid(1, 12)),
